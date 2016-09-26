@@ -1,0 +1,36 @@
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Mocha Tests</title>
+    <link href="https://cdn.rawgit.com/mochajs/mocha/2.2.5/mocha.css" rel="stylesheet"/>
+  </head>
+  <body>
+    <div id="mocha"></div>
+    <div id="demo"></div>
+
+    <script src="https://cdn.rawgit.com/jquery/jquery/2.1.4/dist/jquery.min.js"></script>
+    <script src="https://cdn.rawgit.com/Automattic/expect.js/0.3.1/index.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/bluebird/3.4.6/bluebird.core.js"></script>
+
+    <script src="js/vendor/geo-position.js"></script>
+    <script src="js/vendor/geo-position-simulator.js"></script>
+
+    <!-- testing frameworks -->
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mocha/3.0.2/mocha.min.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/chai/3.5.0/chai.min.js"></script>
+    <script type="text/javascript" src="../node_modules/chai-as-promised/lib/chai-as-promised.js"></script>
+    <script>mocha.setup('bdd')</script>
+
+    <script src="js/Weather.js"></script>
+    <script src="js/Location.js"></script>
+    <script src="js/WeatherElementHandler.js"></script>
+    <script src="js/index-src.js"></script>
+    <script src="js/tests/test.app.js"></script>
+
+    <script>
+      mocha.checkLeaks();
+      mocha.globals(['jQuery']);
+      mocha.run();
+    </script>
+  </body>
+</html>

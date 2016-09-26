@@ -1,32 +1,26 @@
 const path = require("path");
 const webpack = require("webpack");
 
-module.exports = {
-  entry: ["./index.js"],
-  context: path.resolve(__dirname, "src/js/"),
 
+module.exports =
+{
+  entry: {
+    app: path.resolve(__dirname, "src/js/index-src.js")
+  },
 
   output: {
-    filename: "./index.js",
-    path: path.resolve(__dirname, "public/js"),
+    filename: "app.js",
+    path: path.resolve(__dirname, "src/js"),
     publicPath: "/"
   },
 
-  watch: true,
 
-  devServer: {
-    contentBase: "./public",
-    hot: true
-  },
-
-  resolve: {
-    modulesDirectories: ["node_modules"],
-    extensions: ["", ".js"]
-  },
   devtool: "inline-source-map",
   watchOptions: {
     aggregateTimeout: 100
   },
+
+  watch: true,
 
   module: {
 
@@ -34,29 +28,23 @@ module.exports = {
       {
         test: /\.js$/,
         loader: "eslint-loader",
-        include: [
-          path.resolve(__dirname, "/js/"),
-          "!" + path.resolve(__dirname, "/vendor")
-        ]
+        include: path.join(__dirname, "/src/js")
       }
     ],
 
-    loaders: [
-      {
-        test: /\.js$/,
-        loader: "babel",
-        include: path.resolve(__dirname, "src/js"),
-        query: {
-          presets: ["es2015"]
-        }
-      }
-    ]
+    //loaders: [
+    //  {
+    //    test: /\.js$/,
+    //    loader: "babel",
+    //    include: path.resolve(__dirname, "src/js"),
+    //    query: {
+    //      presets: ["es2015"]
+    //    }
+    //  }
+    //]
   },
-
-
-  plugins: [
-
-  ]
-
-
-};
+  resolve: {
+    modulesDirectories: ['node_modules'],
+    extensions: ['', '.js']
+  },
+}

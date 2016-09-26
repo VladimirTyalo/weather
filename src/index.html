@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+  </head>
+  <body>
+    <div class="container">
+      <header class="header">
+        <div class="header__title">
+          <div class="header__intro">you are in city</div>
+          <div class="header__city-name">Samara</div>
+        </div>
+        <div class="header__search">
+          <label for="city" class="header__search-label">type another city</label>
+          <input type="text" id="city" name="city" value="Samara">
+        </div>
+      </header>
+    </div>npm
+
+    <main class="forecast">
+      <div class="forecast__today">
+        <li class="forecast item">
+          <span class="forecast__icon">()</span>
+          <span class="forcast__date"><script>(new Date).toDateString()</script></span>
+          <span class="forecast__temperature">22<sup>o</sup>C</span>
+          <span class="forecast__wind">2 m/s</span>
+        </li>
+      </div>
+      <div class="forecast__long-period">
+        <ul class="forecast__list">
+          <li class="forecast item">
+            <span class="forecast__icon">()</span>
+            <span class="forcast__date"><script>(new Date).toDateString()</script></span>
+            <span class="forecast__temperature">22<sup>o</sup>C</span>
+            <span class="forecast__wind">2 m/s</span>
+          </li>
+
+          <li class="forecast item">
+            <span class="forecast__icon">()</span>
+            <span class="forcast__date"><script>(new Date).toDateString()</script></span>
+            <span class="forecast__temperature">22<sup>o</sup>C</span>
+            <span class="forecast__wind">2 m/s</span>
+          </li>
+
+        </ul>
+      </div>
+    </main>
+
+    <footer class="footer">
+
+    </footer>
+
+    <script src="js/vendor/geo-position.js"></script>
+    <script src="js/index-src.js"></script>
+
+  </body>
+</html>

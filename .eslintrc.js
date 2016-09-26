@@ -4,7 +4,7 @@ module.exports = {
   "parser": "babel-eslint",
 
   "globals": {
-
+    "Promise": true
   },
 
   "env": {
@@ -15,6 +15,7 @@ module.exports = {
   "rules": {
     "no-console": 0,
     "semi": 2,
-    "no-debugger": 0
+    "no-debugger": 0,
+    "no-unused-vars": 0
   }
 };
