@@ -74,7 +74,8 @@ WeatherElementHandler.prototype = {
       console.log(e);
     }
   },
-  updateView() {
+  updateView(forecastIndex) {
+    this._element.setAttribute("forecast-index", forecastIndex);
     for (var param in this._elementsMap) {
       if (this._elementsMap.hasOwnProperty(param)) {
         switch(param) {
