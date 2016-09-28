@@ -2,48 +2,138 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8">
+    <meta viewport="device-width" content="width=device-width, initial-scale=1.0">
     <title>Title</title>
+    <link rel="stylesheet" href="css/styles.css">
   </head>
   <body>
-    <div class="container">
-      <header class="header">
+
+    <header class="header">
+      <div class="container">
         <div class="header__title">
-          <div class="header__intro">you are in city</div>
           <div class="header__city-name">Samara</div>
         </div>
         <div class="header__search">
-          <label for="city" class="header__search-label">type another city</label>
-          <input type="text" id="city" name="city" value="Samara">
+          <input class="header__search-input" type="text" id="city" name="city" placeholder="find weather in another city">
+          <svg class="header__search-icon" version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+	 width="40px" height="40px" viewBox="0 0 50 50" enable-background="new 0 0 50 50" xml:space="preserve">
+
+<circle fill="none" stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-miterlimit="10" cx="21" cy="20" r="16"/>
+<line fill="none" stroke="#000000" stroke-width="4" stroke-miterlimit="10" x1="32.229" y1="32.229" x2="45.5" y2="45.5"/>
+</svg>
         </div>
-      </header>
-    </div>npm
+      </div>
+    </header>
+
 
     <main class="forecast">
-      <div class="forecast__today">
-        <li class="forecast item">
-          <span class="forecast__icon">()</span>
-          <span class="forcast__date"><script>(new Date).toDateString()</script></span>
-          <span class="forecast__temperature">22<sup>o</sup>C</span>
-          <span class="forecast__wind">2 m/s</span>
-        </li>
-      </div>
-      <div class="forecast__long-period">
-        <ul class="forecast__list">
-          <li class="forecast item">
-            <span class="forecast__icon">()</span>
-            <span class="forcast__date"><script>(new Date).toDateString()</script></span>
-            <span class="forecast__temperature">22<sup>o</sup>C</span>
-            <span class="forecast__wind">2 m/s</span>
-          </li>
+      <div class="container">
 
-          <li class="forecast item">
-            <span class="forecast__icon">()</span>
-            <span class="forcast__date"><script>(new Date).toDateString()</script></span>
-            <span class="forecast__temperature">22<sup>o</sup>C</span>
-            <span class="forecast__wind">2 m/s</span>
+        <ul class="forecast__today">
+          <li class="forecast__item">
+            <span class="forecast__week-day" data-weather="week-day">Sut</span>
+            <span class="forecast__month-day" data-weather="month-day">20</span>
+            <span class="forecast__month" data-weather="month">January</span>
+            <span class="forecast__icon" data-weather="icon"></span>
           </li>
-
+          <li class="forecast__item">
+            <div class="forecast__key">Temperature</div>
+            <div class="forecast__val">
+              <div class="forecast__temp-val"><span data-weather="temp">10</span>
+                <sup>o</sup>C
+              </div>
+            </div>
+          </li>
+          <li class="forecast__item">
+            <span class="forecast__key">Humidity</span>
+            <span class="forecast__val" data-weather="humidity">10%</span>
+          </li>
+          <li class="forecast__item">
+            <span class="forecast__key">Wind</span>
+            <span class="forecast__val" data-weather="wind">10</span>
+          </li>
+          <li class="forecast__item">
+            <span class="forecast__key">Pressure</span>
+            <span class="forecast__val" data-weather="pressure">10</span>
+          </li>
+          <li class="forecast__item">
+            <span class="forecast__key">Precipitation</span>
+            <span class="forecast__val" data-weather="rain">rain</span>
+          </li>
         </ul>
+
+
+        <div class="forecast__long-period">
+          <ul class="forecast__list">
+            <li class="forecast__item" data-weather="forecast">
+              <div class="forecast__week-day" data-weather="week-day">Fr</div>
+              <div class="forecast__month-day" data-weather="month-day">31</div>
+              <div class="forecast__month-day" data-weather="month">January</div>
+              <div class="forecast__icon" data-weather="icon"></div>
+              <div class="forecast__temperature">
+                <span data-weather="temp">20</span>
+                <sup>o</sup>
+                <span>C</span>
+              </div>
+            </li>
+            <li class="forecast__item" data-weather="forecast">
+              <div class="forecast__week-day" data-weather="week-day">Fr</div>
+              <div class="forecast__month-day" data-weather="month-day">31</div>
+              <div class="forecast__month-day" data-weather="month">January</div>
+              <div class="forecast__icon" data-weather="icon"></div>
+              <div class="forecast__temperature">
+                <span data-weather="temp">20</span>
+                <sup>o</sup>
+                <span>C</span>
+              </div>
+            </li>
+            <li class="forecast__item"data-weather="forecast">
+              <div class="forecast__week-day" data-weather="week-day">Fr</div>
+              <div class="forecast__month-day" data-weather="month-day">31</div>
+              <div class="forecast__month-day" data-weather="month">January</div>
+              <div class="forecast__icon" data-weather="icon"></div>
+              <div class="forecast__temperature">
+                <span data-weather="temp">20</span>
+                <sup>o</sup>
+                <span>C</span>
+              </div>
+            </li>
+            <li class="forecast__item" data-weather="forecast">
+              <div class="forecast__week-day" data-weather="week-day">Fr</div>
+              <div class="forecast__month-day" data-weather="month-day">31</div>
+              <div class="forecast__month-day" data-weather="month">January</div>
+              <div class="forecast__icon" data-weather="icon"></div>
+              <div class="forecast__temperature">
+                <span data-weather="temp">20</span>
+                <sup>o</sup>
+                <span>C</span>
+              </div>
+            </li>
+            <li class="forecast__item" data-weather="forecast">
+              <div class="forecast__week-day" data-weather="week-day">Fr</div>
+              <div class="forecast__month-day" data-weather="month-day">31</div>
+              <div class="forecast__month-day" data-weather="month">January</div>
+              <div class="forecast__icon" data-weather="icon"></div>
+              <div class="forecast__temperature">
+                <span data-weather="temp">20</span>
+                <sup>o</sup>
+                <span>C</span>
+              </div>
+            </li>
+            <li class="forecast__item" data-weather="forecast">
+              <div class="forecast__week-day" data-weather="week-day">Fr</div>
+              <div class="forecast__month-day" data-weather="month-day">31</div>
+              <div class="forecast__month-day" data-weather="month">January</div>
+              <div class="forecast__icon" data-weather="icon"></div>
+              <div class="forecast__temperature">
+                <span data-weather="temp">20</span>
+                <sup>o</sup>
+                <span>C</span>
+              </div>
+            </li>
+          </ul>
+        </div>
+
       </div>
     </main>
 
@@ -51,8 +141,14 @@
 
     </footer>
 
-    <script src="js/vendor/geo-position.js"></script>
-    <script src="js/index-src.js"></script>
+
+    <script src="https://cdn.rawgit.com/jquery/jquery/2.1.4/dist/jquery.min.js"></script>
+
+    <script src="js/CityLocation.js"></script>
+    <script src="js/Weather.js"></script>
+    <script src="js/WeatherElementHandler.js"></script>
+    <script src="js/ForecastElementHandler.js"></script>
+    <script src="js/app.js"></script>
 
   </body>
 </html>

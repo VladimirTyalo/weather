@@ -1,17 +1,53 @@
 "use strict";
-var $ = window.jQuery;
+
 var url = "http://api.openweathermap.org/data/2.5/";
 
 function Weather(webServiceURL, APIKey) {
   this._webServiceURL = webServiceURL;
   this._APIKey = APIKey;
+  this._query;
 }
+
 
 Weather.prototype = {
 
+
   fetchCurrentWeather: function (place) {
-    var result = this._fetchWeather(place);
-    return result;
+    var currentTime = Date.now();
+    var key = JSON.stringify(place);
+
+    // cash info as {timestemp: _  , weatherObj: _}
+    var cashed = JSON.parse(localStorage.getItem(key));
+
+    if (cashed) {
+      // check how old is the date
+      // if it is older then 20 min  => 60* 60 * 1000 ms remove it from cash
+      var DELAY = 20 * 60 * 1000;
+      var timeStemp = +cashed.timeStemp;
+
+      if (currentTime - timeStemp < DELAY) {
+
+        return Promise.resolve(cashed.weatherObj);
+      }
+
+      // at this point info become outdated
+      localStorage.removeItem(key);
+    }
+
+    var promise = this._fetchWeather(place)
+                      .then(function (weatherObj) {
+
+                        // save weather object to localStorage and reutrn new Promise with same Object
+                        var cashed = JSON.stringify({ timeStemp: currentTime, weatherObj: weatherObj});
+
+                        // if no errors save to the storage
+                        if (weatherObj.main) {
+                          localStorage.setItem(key, cashed);
+                        }
+                        return Promise.resolve(weatherObj);
+                      });
+
+    return promise;
   },
   fetchForecast: function (place) {
     return this._fetchWeather(place, true);
@@ -48,8 +84,9 @@ Weather.prototype = {
     var isLegalParams = url && key && cityName && countryCode;
     if (!isLegalParams) return Promise.reject(new Error("Illegal parameters"));
 
-    var forecast = (future) ? "forecast" : "weather";
-    var query = [forecast, "?q=", cityName, ",", countryCode, "&APPID=", key].join("");
+    var forecast = (future) ? "forecast" : "find";
+    var query = [forecast, "?q=", cityName, ",", countryCode, "&units=metric","&APPID=", key].join("");
+
     return Promise.resolve($.getJSON(url + query));
   },
 
@@ -57,8 +94,9 @@ Weather.prototype = {
     var isLegalParams = url && key && cityCode;
     if (!isLegalParams) return Promise.reject(new Error("Illegal parameters"));
 
-    var forecast = (future) ? "forecast" : "weather";
-    var query = [forecast, "?id=", cityCode, "&APPID=", key].join("");
+    var forecast = (future) ? "forecast" : "find";
+    var query = [forecast, "?id=", cityCode, "&units=metric", "&APPID=", key].join("");
+    this._query = query;
     return Promise.resolve($.getJSON(url + query));
   },
 
@@ -66,8 +104,11 @@ Weather.prototype = {
     var isLegalParams = url && key && location && location.lat && location.lon;
     if (!isLegalParams) return Promise.reject(new Error("Illegal parameters"));
 
-    var forecast = (future) ? "forecast" : "weather";
-    var query = [forecast, "?lat=", location.lat, "&lon=", location.lon, "", "&APPID=", key].join("");
+    var forecast = (future) ? "forecast" : "find";
+    var latitude = Number.parseInt(location.lat);
+    var longitude = Number.parseInt(location.lon);
+    var query = [forecast, "?lat=", latitude, "&lon=", longitude, "&units=metric", "&APPID=", key].join("");
+    this._query = query;
     return Promise.resolve($.getJSON(url + query));
   }
 };

@@ -19,6 +19,10 @@ describe("sanity check", function () {
   it("should cantain chai-as-promise lib", function () {
     expect(chaiAsPromised).to.exist;
   })
+
+  it("should have localStorage", function() {
+    expect(localStorage).to.exist;
+  });
 });
 
 describe("check if Promise object is avaliable", function () {
@@ -27,41 +31,6 @@ describe("check if Promise object is avaliable", function () {
   })
 });
 
-describe("fetchCity()", function () {
-
-  it("should return promise", function () {
-    var result = fetchCity(1, 1);
-    expect(result instanceof Promise).to.be.true;
-  });
-
-  //it("should contain 'NY' city as value of Promise // using done callback", function (done) {
-  //  var expected = "NY";
-  //  var result = fetchCity();
-  //  result.then(function res(city) {
-  //          expect(city).to.equal(expected);
-  //        }, function rej(err) {
-  //          expect(err).to.be.undefined;
-  //        })
-  //        .finally(done);
-  //});
-
-  it("should contain 'NY' city as value of Promise // duplication using Promises", function () {
-    var expected = "NY";
-    return fetchCity(1, 1).then(function res(city) {
-      expect(city).to.equal(expected);
-    }, function rej(err) {
-      expect(err).to.not.exist;
-    }).finally();
-  });
-
-  it("should accept longitude and latitude as parameters", function () {
-    return fetchCity({}, 1).should.be.rejected;
-  });
-
-  it("should return city when passed correct parameters", function () {
-    return fetchCity(3, 3).should.eventually.equal("NY");
-  });
-});
 
 describe("Weather class", function () {
 
@@ -104,7 +73,7 @@ describe("Weather class", function () {
     });
 
     it("should return object with temp field in it", function () {
-      return weather._queryWeatherByCityName(URL, WEATHER_API_KEY, "Samara", "ru")
+      return weather._queryWeatherByCityName(URL, WEATHER_API_KEY, "London", "en")
                     .then(function (data) {
                       expect(data.main.temp).to.exist;
                     })
@@ -151,9 +120,9 @@ describe("Weather class", function () {
       return weather._queryWeatherByLocation(URL, WEATHER_API_KEY, 10, 10).should.eventually.reject;
     });
     it("should return weather object with correct city name in it", function () {
-      return weather._queryWeatherByLocation(URL, WEATHER_API_KEY, {"lon": 122.1726, "lat": -8.7289})
+      return weather._queryWeatherByLocation(URL, WEATHER_API_KEY, {"lon":33.733334,"lat":44.416668})
                     .then(function (weatherObj) {
-                      expect(weatherObj.name).to.be.equal("Lela");
+                      expect(weatherObj.name).to.be.equal("Laspi");
                     });
     });
   });
@@ -199,7 +168,6 @@ describe("Weather class", function () {
     it("should return Promise with correct params", function () {
       return weather.fetchForecast({city: "London", country: "en"})
                     .then(function (forecastObj) {
-                      console.log(forecastObj);
                       expect(forecastObj.list).to.exist;
                       expect(forecastObj.city).to.exist;
                       expect(forecastObj.city.name).to.be.equal("London");
@@ -210,23 +178,24 @@ describe("Weather class", function () {
   });
 
   describe("Location class", function () {
-    var location;
+    var loc;
     before(function () {
-      location = new Location();
+      loc = new CityLocation();
     });
 
     it("location object should exist", function () {
-      expect(location).to.exist;
+      expect(loc).to.exist;
     });
 
     describe("getLocationByIP()", function () {
       it("should  fulfilled promise", function () {
-        return location.getLocationByIP().should.eventually.fulfilled;
+        return loc.getLocationByIP().should.eventually.fulfilled;
       });
 
-      it("should contain promise with string loc property '{lat, lon}'", function () {
-        return location.getLocationByIP().then(function (locationObj) {
-          expect(locationObj.loc).to.exist;
+      it("should contain promise with string lot and lon property ", function () {
+        return loc.getLocationByIP().then(function (locationObj) {
+          expect(locationObj.lat).to.exist;
+          expect(locationObj.lon).to.exist;
         });
       });
 
@@ -234,8 +203,8 @@ describe("Weather class", function () {
   });
 });
 
-describe.only("WeatherElementHandler class", function () {
-  var weatherParams = ["temp", "wind", "humidity", "pressure", "wind", "description", "rain", "icon"];
+describe("WeatherElementHandler class", function () {
+  var weatherParams = ["temp", "time", "wind", "humidity", "pressure", "wind", "description", "rain", "icon"];
   var weatherElement;
   var weatherHandler;
   var weatherObj;
@@ -285,7 +254,7 @@ describe.only("WeatherElementHandler class", function () {
       "name": "Cairns",
       "cod": 200
     }
-    var locationObj = new Location();
+    var locationObj = new CityLocation();
     weatherElement = document.createElement("div");
 
     weatherParams.forEach(function (param) {
@@ -294,16 +263,10 @@ describe.only("WeatherElementHandler class", function () {
       weatherElement.appendChild(el);
     });
 
-    document.body.appendChild(weatherElement);
-
     weatherHandler = new WeatherElementHandler(weatherElement, weatherObj, locationObj.getLocationByIP());
   });
 
-  it("should has weatherElement", function () {
-    document.body.appendChild(weatherElement);
-  });
-
-  describe.only("_findByAttribute(elem, attr)", function () {
+  describe("_findByAttribute(elem, attr)", function () {
     it("should containt temp attribute", function () {
       var elements = weatherHandler._findByAttribute(weatherElement, "data-weather");
 
@@ -312,40 +275,50 @@ describe.only("WeatherElementHandler class", function () {
       expect(elements["rain"]).to.exist;
       expect(elements["wind"]).to.exist;
       expect(elements["icon"]).to.exist;
+      expect(elements["time"]).to.exist;
       expect(elements["undefinded value"]).to.not.exist;
     });
 
   });
 
-  describe("_makeSimpleWeatherObject()", function() {
-    it("should return correct value", function() {
+  describe("_makeSimpleWeatherObject()", function () {
+    it("should return correct value", function () {
       var expectedObj = {
         temp: 293.25,
+        time: 1435658272,
         humidity: 83,
         wind: 5.1,
         pressure: 1019,
-        rain: {'3h':3},
-        description:  "broken clouds",
+        rain:  3,
+        description: "broken clouds",
         icon: "04n"
       };
 
       var result = weatherHandler._makeSimpleWeahterObject(weatherObj);
-      console.log(expectedObj);
-      console.log(result);
-      expect(weatherHandler._makeSimpleWeahterObject(weatherObj)).to.deep.equal(expectedObj);
+      expect(result).to.deep.equal(expectedObj);
+
     });
 
   });
 
-  describe.only("updateView()", function() {
-    it("should update element innerText", function() {
+  describe("updateView()", function () {
+    it("should update element innerText", function () {
       var oldValue = weatherElement.querySelector("[data-weather='temp']").innerText;
       weatherHandler.updateView();
       var newValue = weatherElement.querySelector("[data-weather='temp']").innerText;
-      console.log(newValue);
       expect(oldValue).to.not.equal(newValue);
-    })
-  })
+
+    });
+  });
+
+
+  describe("toCelcius(tempInFarinh)", function () {
+    it("should convert farinheit to celcius correctly", function () {
+      var val = -20;
+      var expected = -28.89;
+      expect(weatherHandler.toCelcius(val)).to.be.within(expected - 0.1, expected + 0.1);
+    });
+  });
 
 
 });

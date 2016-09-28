@@ -1,0 +1,172 @@
+body {
+  backgrond-color: #9ab4b6;
+  background-image: url("../img/sunny-min.jpg");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  margin: 0;
+  padding: 0;
+  color: white;
+}
+
+ul {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.container {
+  max-width: 1050px;
+  margin: 0 auto;
+  padding-left: 10px;
+  padding-right: 10px;
+}
+
+.forecast .container {
+  display: flex;
+  flex-flow: row nowrap;
+}
+
+.header {
+  padding: 2em;
+  margin-bottom: 50px;
+}
+
+.header__title {
+  font-size: 3em;
+  display: flex;
+  flex-flow: row wrap;
+}
+
+.header__city-name,
+.header__date {
+  width: 50%;
+}
+
+.header__search {
+  position: relative;
+}
+
+.header__search-icon {
+  cursor: pointer;
+  position: absolute;
+  right: 10px;
+  top: 5px;
+  opacity: 0.5;
+}
+
+.header__search-icon:hover {
+  opacity: 1;
+  transform: scale(1.1);
+}
+
+.header__search-input {
+  font-size: 2em;
+  display: block;
+  width: 100%;
+  margin: 30px auto;
+  padding: 5px 70px 5px 20px;
+  box-sizing: border-box;
+}
+
+.forecast .container {
+  background: rgba(0, 0, 0, 0.3);
+  padding-top: 20px;
+}
+.forecast__today {
+
+  width: 50%;
+  list-style: none;
+  padding-left: 2%;
+  padding-right: 2%;
+}
+
+
+
+.forecast__item {
+  margin: 0;
+  padding: 5px 10px 5px 0px;
+  border-bottom: 2px solid darkgray;
+  font-size: 1.5em;
+  display: flex;
+  position: relative;
+}
+
+.forecast__today .forecast__icon img {
+  position: absolute;
+  right: 0px;
+  top: -3px;
+}
+
+.forecast__today .forecast__item span {
+  width: 25%;
+}
+
+.forecast__val {
+  flex: 1 0;
+  text-align: right;
+}
+
+.forecast__long-period {
+  flex: 1 1 40%;
+  padding-left: 10px;
+  padding-right: 10px;
+}
+
+.forecast__temp-val,
+.forecast__celc,
+.forecast__far,
+.forecast__CF {
+  display: inline-block;
+}
+
+.forecast__long-period {
+  padding-bottom: 20px;
+}
+
+.forecast__long-period .forecast__item {
+  display: flex;
+  flex-flow: row nowrap;
+  justify-content: flex-start;
+  cursor: pointer;
+}
+
+
+.forecast__long-period .forecast__item:hover {
+  /*transform: scale(1.05);*/
+  color: antiquewhite;
+  background: rgba(0, 0, 0, 0.5);
+}
+
+.forecast__long-period .forecast__week-day {
+  flex: 0 1 50px;
+  margin-right: 10px;
+}
+
+.forecast__long-period .forecast__month-day {
+  flex: 0 1 50px;
+  margin-right: 10px;
+}
+
+.forecast__long-period .forecast__icon {
+  flex: 1 1 100px;
+  position: relative;
+}
+
+.forecast__long-period .forecast__icon img {
+  position: absolute;
+  right: 0px;
+  top: -3px;
+}
+
+.forecast__long-period .forecast__temperature {
+  flex: 0 1 100px;
+  text-align: right;
+}
+
+
+
+
+
+
+
