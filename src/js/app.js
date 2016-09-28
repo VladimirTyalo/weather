@@ -43,8 +43,8 @@ function setBackground(element, weatherObj) {
     case "clouds" : img = "img/storm-min.jpg";break;
     case "rain": img = "img/rain-min.jpg";break;
     case "snow": img = "img/snow-min.jpg"; break;
-    case "default": img = "sunny-min.jpg";break;
-    default: img = "sunny-min.jpg";
+    case "default": img = "img/sunny-min.jpg";break;
+    default: img = "img/sunny-min.jpg";
   }
 
   element.style["background-image"] = "url(" + img + ")";
@@ -65,6 +65,8 @@ function forecastListenerInit(element) {
     if(defferedForecastObject) {
 
       var singleDayForecast = defferedForecastObject.list[targetIndex];
+
+      setBackground(document.body, singleDayForecast);
 
       var weatherElementHandler = new WeatherElementHandler(currentWeatherSection, singleDayForecast);
 

@@ -62,7 +62,7 @@ WeatherElementHandler.prototype = {
       pressure: obj.main.pressure,
       rain: obj.rain["3h"], // {'3h':3}
       description: obj.weather[0].description,
-      icon: obj.weather[0].icon
+      icon: obj.weather[0].icon,
     }
   },
 
@@ -115,7 +115,7 @@ WeatherElementHandler.prototype = {
             break;
           }
           default: {
-            this._elementsMap[param].innerHTML = this._weatherObj[param];
+            this._elementsMap[param].innerHTML = this._weatherObj[param] || "";
           }
 
         }

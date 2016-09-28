@@ -3,7 +3,7 @@ body {
   background-image: url("../img/sunny-min.jpg");
   background-size: cover;
   background-position: center;
-  background-repeat: no-repeat;
+  background-repeat: no-repeat repeat;
   margin: 0;
   padding: 0;
   color: white;
