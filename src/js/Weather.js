@@ -22,7 +22,7 @@ Weather.prototype = {
     if (cashed) {
       // check how old is the date
       // if it is older then 20 min  => 60* 60 * 1000 ms remove it from cash
-      var DELAY = 20 * 60 * 1000;
+      var DELAY = 1 * 60 * 1000;
       var timeStemp = +cashed.timeStemp;
 
       if (currentTime - timeStemp < DELAY) {
@@ -94,7 +94,7 @@ Weather.prototype = {
     var isLegalParams = url && key && cityCode;
     if (!isLegalParams) return Promise.reject(new Error("Illegal parameters"));
 
-    var forecast = (future) ? "forecast" : "find";
+    var forecast = (future) ? "forecast" : "weather";
     var query = [forecast, "?id=", cityCode, "&units=metric", "&APPID=", key].join("");
     this._query = query;
     return Promise.resolve($.getJSON(url + query));
@@ -105,8 +105,8 @@ Weather.prototype = {
     if (!isLegalParams) return Promise.reject(new Error("Illegal parameters"));
 
     var forecast = (future) ? "forecast" : "find";
-    var latitude = Number.parseInt(location.lat);
-    var longitude = Number.parseInt(location.lon);
+    var latitude = encodeURIComponent(Number.parseFloat(location.lat));
+    var longitude = encodeURIComponent(Number.parseFloat(location.lon));
     var query = [forecast, "?lat=", latitude, "&lon=", longitude, "&units=metric", "&APPID=", key].join("");
     this._query = query;
     return Promise.resolve($.getJSON(url + query));

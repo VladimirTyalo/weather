@@ -55,8 +55,8 @@ WeatherElementHandler.prototype = {
 
   _makeSimpleWeahterObject(obj) {
     return {
-      time: +obj.dt * 1000,
       temp: obj.main.temp,
+      time: +obj.dt * 1000,
       humidity: obj.main.humidity,
       wind: obj.wind.speed,
       pressure: obj.main.pressure,

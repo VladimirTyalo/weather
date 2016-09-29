@@ -2,13 +2,13 @@
 
 var WEATHER_API_KEY = "d113902736c97ed02311db143b1d7e32";
 var WEATHER_SERVICE_URL = "http://api.openweathermap.org/data/2.5/";
+
 var currentWeatherSection = document.querySelector(".forecast__today");
 var fiveDayForecastSection = document.querySelector(".forecast__long-period");
-
 var loc = new CityLocation();
 var weather = new Weather(WEATHER_SERVICE_URL, WEATHER_API_KEY);
 
-var defferedForecastObject; // should be initialized before user click the forecast field
+var defferedForecastObject; // should probably be initialized before user clicked the forecast field
 
 loc.getLocationByIP()
    .then(function (location) {

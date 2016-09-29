@@ -7,6 +7,7 @@ body {
   margin: 0;
   padding: 0;
   color: white;
+  transition: background-image 0.5s;
 }
 
 
@@ -150,7 +151,6 @@ ul {
 
 
 .forecast__long-period .forecast__item:hover {
-  /*transform: scale(1.05);*/
   color: antiquewhite;
   background: rgba(0, 0, 0, 0.5);
 }

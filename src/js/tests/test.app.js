@@ -8,7 +8,7 @@ var URL = "http://api.openweathermap.org/data/2.5/";
 chai.use(chaiAsPromised);
 chai.should();
 var expect = chai.expect;
-var describe = describe;
+
 
 
 describe("sanity check", function () {
@@ -20,7 +20,7 @@ describe("sanity check", function () {
     expect(chaiAsPromised).to.exist;
   })
 
-  it("should have localStorage", function() {
+  it("should have localStorage", function () {
     expect(localStorage).to.exist;
   });
 });
@@ -60,22 +60,20 @@ describe("Weather class", function () {
       return weather._queryWeatherByCityName(URL).should.eventually.be.reject;
     });
 
-    it("should return weather object with correct city name in it", function (done) {
-      weather._queryWeatherByCityName(URL, WEATHER_API_KEY, "London", "en")
-             .then(function (data) {
-                 expect(data.name).to.be.equal("London");
-                 done();
-               },
-               function (err) {
-                 expect(err).to.be.undefined;
-                 done();
-               })
+    it("should return weather object with correct city name in it", function () {
+      return weather._queryWeatherByCityName(URL, WEATHER_API_KEY, "London", "en")
+                    .then(function (data) {
+                        expect(data.list[0].name).to.be.equal("London");
+                      },
+                      function (err) {
+                        expect(err).to.be.undefined;
+                      })
     });
 
     it("should return object with temp field in it", function () {
       return weather._queryWeatherByCityName(URL, WEATHER_API_KEY, "London", "en")
                     .then(function (data) {
-                      expect(data.main.temp).to.exist;
+                      expect(data.list[0].main.temp).to.exist;
                     })
                     .catch(function (err) {
                       expect(err).to.not.exist;
@@ -104,11 +102,12 @@ describe("Weather class", function () {
     });
 
     it("should return correct city name in weather object", function () {
-      var cityId = 6325521;
-      var expectedName = "Levis";
-      return weather._queryWeatherByCityCode(URL, WEATHER_API_KEY, cityId).then(function (weatherObj) {
-        expect(weatherObj.name).to.equal(expectedName);
-      });
+      var cityId = 713514;
+      var expectedName = "Alupka";
+      return weather._queryWeatherByCityCode(URL, WEATHER_API_KEY, cityId)
+                    .then(function (weatherObj) {
+                      expect(weatherObj.name).to.equal(expectedName);
+                    });
     });
   });
 
@@ -116,13 +115,14 @@ describe("Weather class", function () {
     it("should fulfilled with correct params", function () {
       return weather._queryWeatherByLocation(URL, WEATHER_API_KEY, {lat: 10, lon: 10}).should.eventually.fulfilled;
     });
+
     it("should fail with wrong params", function () {
       return weather._queryWeatherByLocation(URL, WEATHER_API_KEY, 10, 10).should.eventually.reject;
     });
     it("should return weather object with correct city name in it", function () {
-      return weather._queryWeatherByLocation(URL, WEATHER_API_KEY, {"lon":33.733334,"lat":44.416668})
+      return weather._queryWeatherByLocation(URL, WEATHER_API_KEY, {"lon": 33.733334, "lat": 44.416668})
                     .then(function (weatherObj) {
-                      expect(weatherObj.name).to.be.equal("Laspi");
+                      expect(weatherObj.list[0].name).to.be.equal("Laspi");
                     });
     });
   });
@@ -253,7 +253,7 @@ describe("WeatherElementHandler class", function () {
       "id": 2172797,
       "name": "Cairns",
       "cod": 200
-    }
+    };
     var locationObj = new CityLocation();
     weatherElement = document.createElement("div");
 
@@ -285,18 +285,18 @@ describe("WeatherElementHandler class", function () {
     it("should return correct value", function () {
       var expectedObj = {
         temp: 293.25,
-        time: 1435658272,
+        time: 1435658272 * 1000,
         humidity: 83,
         wind: 5.1,
         pressure: 1019,
-        rain:  3,
+        rain: 3,
         description: "broken clouds",
         icon: "04n"
       };
 
       var result = weatherHandler._makeSimpleWeahterObject(weatherObj);
-      expect(result).to.deep.equal(expectedObj);
 
+      expect(result).to.deep.equal(expectedObj);
     });
 
   });
