@@ -94,7 +94,7 @@ describe("Weather class", function () {
 
   describe("_getWeatherByCityCode()", function () {
     it("should fulfilled with correct params", function () {
-      return weather._queryWeatherByCityCode(URL, WEATHER_API_KEY, 100).should.eventually.fulfilled;
+      return weather._queryWeatherByCityCode(URL, WEATHER_API_KEY, 745042).should.eventually.fulfilled;
     });
 
     it("should be rejected if not correct params are passed", function () {
@@ -176,31 +176,6 @@ describe("Weather class", function () {
     });
 
   });
-
-  describe("Location class", function () {
-    var loc;
-    before(function () {
-      loc = new CityLocation();
-    });
-
-    it("location object should exist", function () {
-      expect(loc).to.exist;
-    });
-
-    describe("getLocationByIP()", function () {
-      it("should  fulfilled promise", function () {
-        return loc.getLocationByIP().should.eventually.fulfilled;
-      });
-
-      it("should contain promise with string lot and lon property ", function () {
-        return loc.getLocationByIP().then(function (locationObj) {
-          expect(locationObj.lat).to.exist;
-          expect(locationObj.lon).to.exist;
-        });
-      });
-
-    });
-  });
 });
 
 describe("WeatherElementHandler class", function () {
@@ -254,7 +229,7 @@ describe("WeatherElementHandler class", function () {
       "name": "Cairns",
       "cod": 200
     };
-    var locationObj = new CityLocation();
+    var locationObj = new LocationService();
     weatherElement = document.createElement("div");
 
     weatherParams.forEach(function (param) {
@@ -289,7 +264,6 @@ describe("WeatherElementHandler class", function () {
         humidity: 83,
         wind: 5.1,
         pressure: 1019,
-        rain: 3,
         description: "broken clouds",
         icon: "04n"
       };

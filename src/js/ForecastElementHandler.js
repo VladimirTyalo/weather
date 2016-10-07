@@ -14,7 +14,7 @@ function ForecastElementHandler(elements, forecastList) {
 
     for (var index = 0; index < self._elements.length; index++) {
       var el = self._elements[index];
-      // weather mesurements takes every 3 hours  => 3 * 8 = 24h => 1 day
+      // weather measurements takes every 3 hours  => 3 * 8 = 24h => 1 day
       var weatherObjIndex = (index * 8 < self._forecastList.length) ? index * 8 : self._forecastList.length - 1;
       var weatherHandler = new WeatherElementHandler(el, self._forecastList[weatherObjIndex]);
       weatherHandler.updateView(weatherObjIndex);

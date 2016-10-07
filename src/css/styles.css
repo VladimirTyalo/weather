@@ -149,6 +149,39 @@ ul {
   cursor: pointer;
 }
 
+.visually-hidden {
+  display: none;
+}
+
+.autocomplete-box {
+  position: relative;
+  max-width: 1050px;
+  margin: 0 auto;
+}
+
+
+
+.autocomplete-box__popup {
+  position: absolute;
+  top: 40px;
+  left: 0;
+  width: 100%;
+  background: rgba(0, 0, 0, 0.6);
+}
+
+.autocomplete-box__popup-item {
+  width: 100%;
+  font-size: 1.5em;
+  padding: 5px 70px 5px 20px;
+  box-sizing: border-box;
+
+}
+
+
+.autocomplete-box__popup-item--active {
+  background: rgba(20, 100, 20, 0.5);
+  color: #dae9b5;
+}
 
 .forecast__long-period .forecast__item:hover {
   color: antiquewhite;

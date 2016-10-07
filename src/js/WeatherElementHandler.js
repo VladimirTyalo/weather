@@ -25,14 +25,21 @@ function WeatherElementHandler(element, weatherObj) {
 
 function toStringWeekDay(timeStemp) {
   var day = (new Date(timeStemp)).getDay();
-  switch(day) {
-    case 0: return "Sun";
-    case 1: return "Mon";
-    case 2: return "Tue";
-    case 3: return "Wed";
-    case 4: return "Thu";
-    case 5: return "Fri";
-    case 6: return "Sat";
+  switch (day) {
+    case 0:
+      return "Sun";
+    case 1:
+      return "Mon";
+    case 2:
+      return "Tue";
+    case 3:
+      return "Wed";
+    case 4:
+      return "Thu";
+    case 5:
+      return "Fri";
+    case 6:
+      return "Sat";
   }
 }
 
@@ -54,15 +61,15 @@ WeatherElementHandler.prototype = {
   },
 
   _makeSimpleWeahterObject(obj) {
+    if(!obj) throw new Error("Illegal object weather");
     return {
-      temp: obj.main.temp,
-      time: +obj.dt * 1000,
-      humidity: obj.main.humidity,
-      wind: obj.wind.speed,
-      pressure: obj.main.pressure,
-      rain: obj.rain["3h"], // {'3h':3}
-      description: obj.weather[0].description,
-      icon: obj.weather[0].icon,
+      temp: (obj.main && obj.main.temp) ? obj.main.temp : "",
+      time: (obj.dt) ? +obj.dt * 1000 : "",
+      humidity: (obj.main && obj.main.humidity) ? obj.main.humidity : "",
+      wind: (obj.wind && obj.wind.speed) ? obj.wind.speed : "",
+      pressure: (obj.main && obj.main.pressure)? obj.main.pressure : "",
+      description: (obj.weather && obj.weather[0] && obj.weather[0].description)? obj.weather[0].description : "",
+      icon: (obj.weather && obj.weather[0] && obj.weather[0].icon)? obj.weather[0].icon : "",
     }
   },
 
@@ -78,43 +85,51 @@ WeatherElementHandler.prototype = {
     this._element.setAttribute("forecast-index", forecastIndex);
     for (var param in this._elementsMap) {
       if (this._elementsMap.hasOwnProperty(param)) {
-        switch(param) {
-          case "week-day": {
+        switch (param) {
+          case "week-day":
+          {
             var time = this._weatherObj.time;
-            var day  = toStringWeekDay(time);
+            var day = toStringWeekDay(time);
             this._elementsMap[param].innerText = day;
             break;
           }
-          case "month-day": {
+          case "month-day":
+          {
             var time = this._weatherObj.time;
-            var day  = (new Date(time)).getDate();
+            var day = (new Date(time)).getDate();
             this._elementsMap[param].innerText = day;
             break;
           }
-          case "month": {
+          case "month":
+          {
             var time = this._weatherObj.time;
-            var month  = toStringMonth(time);
+            var month = toStringMonth(time);
             this._elementsMap[param].innerText = month;
             break;
           }
-          case "icon":  {
+          case "icon":
+          {
             var id = this._weatherObj[param];
             this._elementsMap[param].appendChild(this._makeIconElement(id));
             break;
           }
-          case "humidity": {
+          case "humidity":
+          {
             this._elementsMap[param].innerText = this._weatherObj[param] + "%";
             break;
           }
-          case "wind": {
+          case "wind":
+          {
             this._elementsMap[param].innerText = this._weatherObj[param] + "m/s";
             break;
           }
-          case "pressure": {
+          case "pressure":
+          {
             this._elementsMap[param].innerText = this._weatherObj[param] + "hPa";
             break;
           }
-          default: {
+          default:
+          {
             this._elementsMap[param].innerHTML = this._weatherObj[param] || "";
           }
 

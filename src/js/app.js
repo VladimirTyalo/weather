@@ -5,7 +5,7 @@ var WEATHER_SERVICE_URL = "http://api.openweathermap.org/data/2.5/";
 
 var currentWeatherSection = document.querySelector(".forecast__today");
 var fiveDayForecastSection = document.querySelector(".forecast__long-period");
-var loc = new CityLocation();
+var loc = new LocationService();
 var weather = new Weather(WEATHER_SERVICE_URL, WEATHER_API_KEY);
 
 var defferedForecastObject; // should probably be initialized before user clicked the forecast field
@@ -18,6 +18,7 @@ loc.getLocationByIP()
      var forecastElements = document.querySelectorAll("[data-weather='forecast']");
      defferedForecastObject = forecastObj;
      var forecastHandler = new ForecastElementHandler(forecastElements, forecastObj.list);
+
 
      var weatherObj = forecastObj.list[0];
      setBackground(document.body, weatherObj);

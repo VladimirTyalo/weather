@@ -1,0 +1,36 @@
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Mocha Tests</title>
+    <link href="https://cdn.rawgit.com/mochajs/mocha/2.2.5/mocha.css" rel="stylesheet"/>
+    <link rel="stylesheet" href="css/styles.css">
+  </head>
+  <body>
+    <div id="mocha"></div>
+    <div id="demo"></div>
+
+    <div id="input-wrapper" class="autocomplete-box">
+      <input type="text" class="header__search-input">
+    </div>
+
+    <script src="https://cdn.rawgit.com/jquery/jquery/2.1.4/dist/jquery.min.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/bluebird/3.4.6/bluebird.core.js"></script>
+
+    <!-- testing frameworks -->
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mocha/3.0.2/mocha.min.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/chai/3.5.0/chai.min.js"></script>
+    <script type="text/javascript" src="../node_modules/chai-as-promised/lib/chai-as-promised.js"></script>
+    <script>mocha.setup('bdd')</script>
+
+    <script src="config/config.js"></script>
+    <script src="js/AutocompleteBox.js"></script>
+    <script src="js/AutocompleteController.js"></script>
+    <script src="js/tests/test.autocomplete-controller.js"></script>
+
+    <script>
+      mocha.checkLeaks();
+      mocha.globals(['script*', 'jQuery*']);
+      mocha.run();
+    </script>
+  </body>
+</html>

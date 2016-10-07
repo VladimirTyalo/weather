@@ -2,15 +2,14 @@
 
 var url = "http://api.openweathermap.org/data/2.5/";
 
-function Weather(webServiceURL, APIKey) {
+function Weather(webServiceURL, WEATHER_API_KEY) {
   this._webServiceURL = webServiceURL;
-  this._APIKey = APIKey;
+  this._APIKey = WEATHER_API_KEY;
   this._query;
 }
 
 
 Weather.prototype = {
-
 
   fetchCurrentWeather: function (place) {
     var currentTime = Date.now();
@@ -49,9 +48,11 @@ Weather.prototype = {
 
     return promise;
   },
+
   fetchForecast: function (place) {
     return this._fetchWeather(place, true);
   },
+
   // future - true if you want forecast and false if you want current weather;
   _fetchWeather: function (place, future) {
     if (typeof place === "string" || typeof place === "number") {
@@ -80,6 +81,7 @@ Weather.prototype = {
       }
     }
   },
+
   _queryWeatherByCityName: function queryWeatherFromCityName(url, key, cityName, countryCode, future) {
     var isLegalParams = url && key && cityName && countryCode;
     if (!isLegalParams) return Promise.reject(new Error("Illegal parameters"));
