@@ -235,7 +235,6 @@ describe("test Autocomplete box", function () {
 
       expect(inputVal).to.be.equal(activeItem.innerText);
 
-      // ------------------------------------
 
       autocompleteBox.next();
       autocompleteBox.next();
@@ -254,7 +253,8 @@ describe("test Autocomplete box", function () {
     it("should return current input field value", function() {
       autocompleteBox.open();
       autocompleteBox.update(["Mary", "Mother"]);
-      var input = autocompleteBox.getInput();
+      autocompleteBox.select();
+      var input = autocompleteBox.getInputText();
       expect(input).to.equal("Mary");
     });
 
@@ -263,10 +263,11 @@ describe("test Autocomplete box", function () {
       var input = element.getElementsByTagName("input")[0];
       var typedContent = "H";
       autocompleteBox.open();
+      autocompleteBox.select();
 
       input.value = typedContent;
 
-      expect(autocompleteBox.getInput()).to.be.equal(typedContent);
+      expect(autocompleteBox.getInputText()).to.be.equal(typedContent);
     });
   })
 

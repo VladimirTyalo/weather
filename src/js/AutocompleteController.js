@@ -11,13 +11,52 @@ var searchIcon = document.getElementById("search-icon");
 
 function AutocompleteController(autoBox) {
 
-  var actionMap = (autoBox !== undefined) ? {38: autoBox.prev, 40: autoBox.next} : {};
+  var keyActionMap = (autoBox !== undefined) ? {
+    38: autoBox.prev,
+    40: autoBox.next,
+    9: autoBox.select
+  } : {};
+
 
   function initListeners() {
-    $(window).keydown(function (ev) {
-      var key = ev.which;
-      if (actionMap[key]) actionMap[key]();
+    window.addEventListener("keydown", function (ev) {
+      var key = ev.keyCode;
 
+      if (key === 9) {
+        ev.preventDefault();
+      }
+      if (keyActionMap[key]) keyActionMap[key]();
+
+
+    });
+
+    $("input").keyup(function (ev) {
+      var key = +ev.which;
+      var $input = $(this);
+
+      if ($input.val() == "") {
+        autoBox.close();
+        return;
+      }
+
+      if ([9, 37, 38, 39, 40].indexOf(key) < 0) {
+        $input.attr("data-real-param", null);
+
+        var debouncedGetCityNames = debounce(getCityNames, 10000);
+
+        debouncedGetCityNames()
+          .then(function (list) {
+            if (list.length === 0) {
+              autoBox.close();
+              return;
+            }
+            autoBox.update(list);
+          })
+          .catch(function (err) {
+            console.log(err);
+          });
+
+      }
     });
   }
 
@@ -50,11 +89,28 @@ function AutocompleteController(autoBox) {
         return $.map(list, function (el) {
           return cityToString(el);
         });
-      })
-      .then(function (list) {
-        autoBox.update(list);
-        return list;
       });
+
+  }
+
+  // evaluate function only if prev evaluation was later then "time" ago
+  // otherwise return previous result;
+  function debounce(fn, time) {
+    if (time <= 0) throw new Error("debouncing time should be greater then 0");
+    var lastTime = 0;
+    var cashedResult;
+    var self = this;
+
+    return function debouncedFunction() {
+      var delay = Date.now() - lastTime;
+      var args = Array.prototype.slice.call(arguments);
+
+      if (delay > time) {
+        cashedResult = fn.apply(self, args);
+        lastTime = Date.now();
+      }
+      return cashedResult;
+    }
   }
 
 
@@ -62,7 +118,7 @@ function AutocompleteController(autoBox) {
     if (cityObj) {
       var lat = cityObj.coord.lat.toFixed(1);
       var lon = cityObj.coord.lon.toFixed(1);
-      return cityObj.name + " " + cityObj.country + " latitude: " + lat + " longitude: " + lon;
+      return cityObj.name + " // " + cityObj.country + " latitude: " + lat + " longitude: " + lon + "//" + cityObj.id;
     }
   }
 

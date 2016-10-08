@@ -8,21 +8,53 @@ body {
   padding: 0;
   color: white;
   transition: background-image 0.5s;
+
+  /* customization of a scrollbar for IE */
+  scrollbar-face-color: white;
+
 }
 
 
 ::-webkit-input-placeholder { /* Chrome/Opera/Safari */
-  color: antiquewhite;;
+  color: antiquewhite;
 }
 ::-moz-placeholder { /* Firefox 19+ */
-  color: antiquewhite;;
+  color: antiquewhite;
 }
 :-ms-input-placeholder { /* IE 10+ */
-  color: antiquewhite;;
+  color: antiquewhite;
 }
 :-moz-placeholder { /* Firefox 18- */
-  color: antiquewhite;;
+  color: antiquewhite;
 }
+
+/* customization of a scrollbar for webkit */
+::-webkit-scrollbar {
+  width: 15px;
+}
+
+/* this targets the default scrollbar (compulsory) */
+::-webkit-scrollbar-track {
+  background-color: #ffffff;
+}
+
+/* the new scrollbar will have a flat appearance with the set background color */
+::-webkit-scrollbar-thumb {
+  background-color: #a2bfce;
+}
+
+/* this will style the thumb, ignoring the track */
+::-webkit-scrollbar-button {
+  background-color: #a2bfce;
+}
+
+/*!* optionally, you can style the top and the bottom buttons (left and right for horizontal bars) *!*/
+/*::-webkit-scrollbar-corner {*/
+  /*background-color: #fff63f;*/
+/*}*/
+
+
+
 
 ul {
   margin: 0;
@@ -83,7 +115,8 @@ ul {
   padding: 5px 70px 5px 20px;
   box-sizing: border-box;
   background: rgba(0, 0, 0, 0.3);
-  border: none;
+  border: 2px solid white;
+  border-radius: 0.2em;
   color: white;
 }
 
@@ -163,16 +196,18 @@ ul {
 
 .autocomplete-box__popup {
   position: absolute;
-  top: 40px;
+  top: 4em;
   left: 0;
   width: 100%;
   background: rgba(0, 0, 0, 0.6);
+  border: 2px solid white;
+  border-radius: 0.2em;
 }
 
 .autocomplete-box__popup-item {
   width: 100%;
   font-size: 1.5em;
-  padding: 5px 70px 5px 20px;
+  padding: 10px 70px 10px 20px;
   box-sizing: border-box;
 
 }

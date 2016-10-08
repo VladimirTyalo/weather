@@ -3,6 +3,24 @@
 // element - DOM wrapper element with  <input type='text'> element in it
 // list - array of string names to put into autocomplite popup box;
 
+(function($){
+  $.fn.selectRange = function(start, end) {
+    return this.each(function() {
+      if (this.setSelectionRange) {
+        this.focus();
+        this.setSelectionRange(start, end);
+      } else if (this.createTextRange) {
+        var range = this.createTextRange();
+        range.collapse(true);
+        range.moveEnd('character', end);
+        range.moveStart('character', start);
+        range.select();
+      }
+    });
+  };
+
+})(jQuery);
+
 function AutocompleteBox(element, list) {
   // deep clone of list
   var innerList = JSON.parse(JSON.stringify(list));
@@ -18,7 +36,6 @@ function AutocompleteBox(element, list) {
 
   var popup;
   var activeItem;
-
 
   function open() {
     var els = element.querySelectorAll("." + POPUP_CLASS);
@@ -36,7 +53,11 @@ function AutocompleteBox(element, list) {
 
       var el = document.createElement("div");
       el.setAttribute("data-index", index);
-      el.innerText = string;
+
+      var cityParams = string.split("//");
+
+      el.innerText = cityParams[0] + " // " + cityParams[1];
+      el.setAttribute("data-real-param", cityParams[2]);
       el.classList.add(POPUP_ITEM_CLASS);
       if (index == 0) {
         activeItem = el;
@@ -46,17 +67,19 @@ function AutocompleteBox(element, list) {
     });
 
     element.appendChild(popup);
-    _select();
   }
 
   function close() {
     var els = element.querySelectorAll("." + POPUP_CLASS);
     if (els.length == 0) return;
+    var oldInput = input.value;
 
     els[0].parentNode.removeChild(els[0]);
     activeItem = undefined;
     input.setAttribute("value", "");
     input.value = "";
+    input.setAttribute("data-real-param", undefined);
+    input.value = oldInput;
   }
 
   function next() {
@@ -66,16 +89,26 @@ function AutocompleteBox(element, list) {
       current.classList.remove(POPUP_ITEM_ACTIVE_CLASS);
       current.nextSibling.classList.add(POPUP_ITEM_ACTIVE_CLASS);
       activeItem = current.nextSibling;
+
       _select();
 
       // move scrollbar
-      var activeElementBottom = activeItem.getBoundingClientRect().bottom;
-      var scrollHeight = current.parentNode.offsetHeight;
-      var parentTop = current.parentNode.getBoundingClientRect().top;
+      adjastScrollbar(current.parentNode, activeItem);
+    }
+  }
 
-      if(activeElementBottom  > parentTop + scrollHeight) {
-        current.parentNode.scrollTop += 100;
-      }
+  function adjastScrollbar(parent, active) {
+    var activeTop = active.getBoundingClientRect().top;
+    var activeBottom = active.getBoundingClientRect().bottom;
+    var parentTop = parent.getBoundingClientRect().top;
+    var parentBottom = parent.getBoundingClientRect().bottom;
+
+    if(activeBottom > parentBottom ) {
+      parent.scrollTop += activeBottom - parentBottom;
+    }
+
+    else if (activeTop <= parentTop) {
+      parent.scrollTop += activeTop - parentTop;
     }
   }
 
@@ -86,16 +119,12 @@ function AutocompleteBox(element, list) {
       current.classList.remove(POPUP_ITEM_ACTIVE_CLASS);
       current.previousSibling.classList.add(POPUP_ITEM_ACTIVE_CLASS);
       activeItem = current.previousSibling;
-      _select();
     }
+
+    _select();
 
     // move scrollbar
-    var activeElementTop = activeItem.getBoundingClientRect().top;
-    var parentTop = current.parentNode.getBoundingClientRect().top;
-
-    if(activeElementTop  < parentTop) {
-      current.parentNode.scrollTop -= 100;
-    }
+    adjastScrollbar(current.parentNode, activeItem);
   }
 
   function setActive(index) {
@@ -113,15 +142,21 @@ function AutocompleteBox(element, list) {
   }
 
   function update(newList) {
+    var oldInput = input.value;
     innerList = JSON.parse(JSON.stringify(newList));
     close();
     open();
+    input.value = oldInput;
   }
 
   function _select() {
     var activeVal = activeItem.innerText;
+    var realQueryParameter = activeItem.getAttribute("data-real-param");
+
     input.setAttribute("value", activeVal);
-    input.value = activeVal;
+    input.value = activeVal.split("//")[0].trim();
+    input.focus();
+    input.setAttribute("data-real-param", realQueryParameter);
   }
 
   function getInputText() {
