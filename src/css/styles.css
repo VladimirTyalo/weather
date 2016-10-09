@@ -40,7 +40,7 @@ body {
 
 /* the new scrollbar will have a flat appearance with the set background color */
 ::-webkit-scrollbar-thumb {
-  background-color: #a2bfce;
+  background-color: #819cab;
 }
 
 /* this will style the thumb, ignoring the track */
@@ -209,7 +209,7 @@ ul {
   font-size: 1.5em;
   padding: 10px 70px 10px 20px;
   box-sizing: border-box;
-
+  cursor: pointer;
 }
 
 

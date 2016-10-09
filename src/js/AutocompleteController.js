@@ -17,6 +17,7 @@ function AutocompleteController(autoBox) {
     9: autoBox.select
   } : {};
 
+  var debouncedGetCityNames = debounce(getCityNames, 200);
 
   function initListeners() {
     window.addEventListener("keydown", function (ev) {
@@ -42,7 +43,7 @@ function AutocompleteController(autoBox) {
       if ([9, 37, 38, 39, 40].indexOf(key) < 0) {
         $input.attr("data-real-param", null);
 
-        var debouncedGetCityNames = debounce(getCityNames, 10000);
+
 
         debouncedGetCityNames()
           .then(function (list) {
@@ -58,6 +59,7 @@ function AutocompleteController(autoBox) {
 
       }
     });
+
   }
 
   function getCities() {
@@ -74,6 +76,7 @@ function AutocompleteController(autoBox) {
       "&apiKey=", config.mongodb.apiKey
     ].join("");
 
+    console.log("Sanding request");
     return Promise.resolve($.ajax({
       url: url,
       type: 'GET',
@@ -95,9 +98,11 @@ function AutocompleteController(autoBox) {
 
   // evaluate function only if prev evaluation was later then "time" ago
   // otherwise return previous result;
+  // this version don't take last entered result when it claimed in delay time interval
+  // TODO refactor to use Promises
   function debounce(fn, time) {
     if (time <= 0) throw new Error("debouncing time should be greater then 0");
-    var lastTime = 0;
+    var lastTime = -Infinity;
     var cashedResult;
     var self = this;
 
@@ -106,10 +111,14 @@ function AutocompleteController(autoBox) {
       var args = Array.prototype.slice.call(arguments);
 
       if (delay > time) {
+
         cashedResult = fn.apply(self, args);
         lastTime = Date.now();
       }
       return cashedResult;
+
+
+
     }
   }
 
@@ -121,6 +130,7 @@ function AutocompleteController(autoBox) {
       return cityObj.name + " // " + cityObj.country + " latitude: " + lat + " longitude: " + lon + "//" + cityObj.id;
     }
   }
+
 
   return {
     getCities: getCities,

@@ -3,24 +3,6 @@
 // element - DOM wrapper element with  <input type='text'> element in it
 // list - array of string names to put into autocomplite popup box;
 
-(function($){
-  $.fn.selectRange = function(start, end) {
-    return this.each(function() {
-      if (this.setSelectionRange) {
-        this.focus();
-        this.setSelectionRange(start, end);
-      } else if (this.createTextRange) {
-        var range = this.createTextRange();
-        range.collapse(true);
-        range.moveEnd('character', end);
-        range.moveStart('character', start);
-        range.select();
-      }
-    });
-  };
-
-})(jQuery);
-
 function AutocompleteBox(element, list) {
   // deep clone of list
   var innerList = JSON.parse(JSON.stringify(list));
@@ -56,7 +38,7 @@ function AutocompleteBox(element, list) {
 
       var cityParams = string.split("//");
 
-      el.innerText = cityParams[0] + " // " + cityParams[1];
+      el.innerText = cityParams[0] + " | " + cityParams[1];
       el.setAttribute("data-real-param", cityParams[2]);
       el.classList.add(POPUP_ITEM_CLASS);
       if (index == 0) {
@@ -67,6 +49,18 @@ function AutocompleteBox(element, list) {
     });
 
     element.appendChild(popup);
+
+    popup.addEventListener("click", popupClickHandler);
+  }
+
+
+  function popupClickHandler(ev) {
+    ev.preventDefault();
+    var target = ev.target;
+    var index = target.getAttribute("data-index");
+
+    if (index == undefined) return;
+    setActive(index);
   }
 
   function close() {
@@ -74,36 +68,53 @@ function AutocompleteBox(element, list) {
     if (els.length == 0) return;
     var oldInput = input.value;
 
+    if (popup) {
+      popup.removeEventListener("click", popupClickHandler);
+    }
+
     els[0].parentNode.removeChild(els[0]);
     activeItem = undefined;
     input.setAttribute("value", "");
     input.value = "";
     input.setAttribute("data-real-param", undefined);
     input.value = oldInput;
+
+
+  }
+
+  function setActiveSibling(current, sibling, prevOrNextDomName) {
+    current.classList.remove(POPUP_ITEM_ACTIVE_CLASS);
+    sibling.classList.add(POPUP_ITEM_ACTIVE_CLASS);
+    activeItem = current[prevOrNextDomName];
   }
 
   function next() {
     var current = element.querySelector("." + POPUP_ITEM_ACTIVE_CLASS);
 
     if (current && current.nextSibling) {
-      current.classList.remove(POPUP_ITEM_ACTIVE_CLASS);
-      current.nextSibling.classList.add(POPUP_ITEM_ACTIVE_CLASS);
-      activeItem = current.nextSibling;
-
-      _select();
-
-      // move scrollbar
-      adjastScrollbar(current.parentNode, activeItem);
+      setActiveSibling(current, current.nextSibling, "nextSibling");
+      select();
+      adjustScrollbar(current.parentNode, activeItem);
     }
   }
 
-  function adjastScrollbar(parent, active) {
+  function prev() {
+    var current = element.querySelector("." + POPUP_ITEM_ACTIVE_CLASS);
+
+    if (current && current.previousSibling) {
+      setActiveSibling(current, current.previousSibling, "previousSibling");
+      select();
+      adjustScrollbar(current.parentNode, activeItem);
+    }
+  }
+
+  function adjustScrollbar(parent, active) {
     var activeTop = active.getBoundingClientRect().top;
     var activeBottom = active.getBoundingClientRect().bottom;
     var parentTop = parent.getBoundingClientRect().top;
     var parentBottom = parent.getBoundingClientRect().bottom;
 
-    if(activeBottom > parentBottom ) {
+    if (activeBottom > parentBottom) {
       parent.scrollTop += activeBottom - parentBottom;
     }
 
@@ -112,20 +123,6 @@ function AutocompleteBox(element, list) {
     }
   }
 
-  function prev() {
-    var current = element.querySelector("." + POPUP_ITEM_ACTIVE_CLASS);
-
-    if (current && current.previousSibling) {
-      current.classList.remove(POPUP_ITEM_ACTIVE_CLASS);
-      current.previousSibling.classList.add(POPUP_ITEM_ACTIVE_CLASS);
-      activeItem = current.previousSibling;
-    }
-
-    _select();
-
-    // move scrollbar
-    adjastScrollbar(current.parentNode, activeItem);
-  }
 
   function setActive(index) {
     var elements = element.querySelectorAll("." + POPUP_ITEM_CLASS);
@@ -138,7 +135,8 @@ function AutocompleteBox(element, list) {
     elements[oldIndex].classList.remove(POPUP_ITEM_ACTIVE_CLASS);
     elements[index].classList.add(POPUP_ITEM_ACTIVE_CLASS);
     activeItem = elements[index];
-    _select();
+
+    select();
   }
 
   function update(newList) {
@@ -149,7 +147,7 @@ function AutocompleteBox(element, list) {
     input.value = oldInput;
   }
 
-  function _select() {
+  function select() {
     var activeVal = activeItem.innerText;
     var realQueryParameter = activeItem.getAttribute("data-real-param");
 
@@ -177,7 +175,7 @@ function AutocompleteBox(element, list) {
     prev: prev,
     setActive: setActive,
     update: update,
-    select: _select // TODO remove after testing
+    select: select
   };
 
   return publicAPI;
