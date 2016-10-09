@@ -96,8 +96,6 @@ function AutocompleteBox(element, list, lineSplitter) {
     input.value = "";
     input.setAttribute("data-real-param", undefined);
     input.value = oldInput;
-
-
   }
 
   function setActiveSibling(current, sibling, prevOrNextDomName) {

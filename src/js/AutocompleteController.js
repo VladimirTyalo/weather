@@ -3,10 +3,10 @@
 
 var config = config;
 
-var inputWrapper = document.getElementById("input-wrapper");
-var currentWeatherTable = document.getElementsByClassName("forecast__today")[0];
-var fiveDayForecastTable = document.getElementsByClassName("forecast__long-period")[0];
-var searchIcon = document.getElementById("search-icon");
+//var inputWrapper = document.getElementById("input-wrapper");
+//var currentWeatherTable = document.getElementsByClassName("forecast__today")[0];
+//var fiveDayForecastTable = document.getElementsByClassName("forecast__long-period")[0];
+//var searchIcon = document.getElementById("search-icon");
 
 // autoBox - autocomplete box object
 // toAutoBoxItemFormat - function that excepts item object and converts it to string representation of this object (optional)
@@ -21,21 +21,20 @@ function AutocompleteController(autoBox, toAutoBoxItemFormat) {
 
 
   var getItems = (toAutoBoxItemFormat) ? function () {return getCityNames.call(this, toAutoBoxItemFormat);} : getCityNames;
-  var debouncedGetCityNames = debounce(getItems, 200);
 
   function initListeners() {
-
 
     window.addEventListener("keydown", function (ev) {
       var key = ev.keyCode;
 
       if (key === 9) {
+        if(autoBox.getInputText() === "") return;
         ev.preventDefault();
       }
       if (keyActionMap[key]) keyActionMap[key]();
     });
 
-    $("input").keyup(function (ev) {
+    $(autoBox.getInputElement()).keyup(function (ev) {
       var key = +ev.which;
       var $input = $(this);
 
@@ -46,16 +45,13 @@ function AutocompleteController(autoBox, toAutoBoxItemFormat) {
 
       if ([9, 37, 38, 39, 40].indexOf(key) < 0) {
         $input.attr("data-real-param", null);
-        debouncedGetCityNames()
+        getItems()
           .then(function (list) {
             if (list.length === 0) {
               autoBox.close();
               return;
             }
             autoBox.update(list);
-          })
-          .catch(function (err) {
-            console.log(err);
           });
       }
     });

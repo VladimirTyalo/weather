@@ -37,7 +37,7 @@ Weather.prototype = {
                       .then(function (weatherObj) {
 
                         // save weather object to localStorage and reutrn new Promise with same Object
-                        var cashed = JSON.stringify({ timeStemp: currentTime, weatherObj: weatherObj});
+                        var cashed = JSON.stringify({timeStemp: currentTime, weatherObj: weatherObj});
 
                         // if no errors save to the storage
                         if (weatherObj.main) {
@@ -50,6 +50,9 @@ Weather.prototype = {
   },
 
   fetchForecast: function (place) {
+    if(place == "" || place == undefined || place == "null" || place == "undefined") {
+      return Promise.reject(new Error("place should not be empty string"));
+    }
     return this._fetchWeather(place, true);
   },
 
@@ -59,7 +62,7 @@ Weather.prototype = {
       // handle weather request by city name or city Id
       var code;
       try {
-        code = Number.parseInt(place);
+        code = Number.parseInt("" + place);
         return this._queryWeatherByCityCode(this._webServiceURL, this._APIKey, code, future);
       }
       catch (e) {
@@ -87,9 +90,16 @@ Weather.prototype = {
     if (!isLegalParams) return Promise.reject(new Error("Illegal parameters"));
 
     var forecast = (future) ? "forecast" : "find";
-    var query = [forecast, "?q=", cityName, ",", countryCode, "&units=metric","&APPID=", key].join("");
+    var query = [forecast, "?q=", cityName, ",", countryCode, "&units=metric", "&APPID=", key].join("");
 
-    return Promise.resolve($.getJSON(url + query));
+    return Promise.resolve($.ajax(
+      {
+        url: url + query,
+        type: 'GET',
+        crossDomain: true,
+        dataType: 'json'
+      }
+    ));
   },
 
   _queryWeatherByCityCode: function queryWeatherFromCityCode(url, key, cityCode, future) {

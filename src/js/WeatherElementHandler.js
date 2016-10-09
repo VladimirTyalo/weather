@@ -8,7 +8,6 @@
 //  data-weather = "wind"
 //  data-weather = "pressure"
 //  data-weather = "description"
-//  data-weather = "rain"  // rain volume for the last 3 hours
 //  data-weather = "icon"
 
 var monthNames = ["January", "February", "March", "April", "May", "June",
