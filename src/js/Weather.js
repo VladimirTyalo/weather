@@ -107,8 +107,8 @@ Weather.prototype = {
     if (!isLegalParams) return Promise.reject(new Error("Illegal parameters"));
 
     var forecast = (future) ? "forecast" : "find";
-    var latitude = encodeURIComponent(Number.parseFloat(location.lat));
-    var longitude = encodeURIComponent(Number.parseFloat(location.lon));
+    var latitude = encodeURIComponent(Number.parseFloat("" + location.lat));
+    var longitude = encodeURIComponent(Number.parseFloat("" + location.lon));
     var query = [forecast, "?lat=", latitude, "&lon=", longitude, "&units=metric", "&APPID=", key].join("");
     this._query = query;
     return Promise.resolve($.getJSON(url + query));

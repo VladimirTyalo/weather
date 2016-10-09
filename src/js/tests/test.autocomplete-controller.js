@@ -48,23 +48,33 @@ describe("AutocompleteController() ", function () {
       });
     });
 
-    it("should contain no more then 10 objects", function() {
+    it("should contain no more then 10 objects", function () {
       var partialCityName = "Sam";
       input.value = partialCityName;
-      return autoController.getCities().then(function(data) {
+      return autoController.getCities().then(function (data) {
         var result = data.length;
         expect(result).to.be.below(11);
       });
     });
   });
 
-  describe("getCityNames()", function() {
-    it("should return promise with city name in first object", function() {
+  describe("getCityNames()", function () {
+    it("should return promise with city name in first object", function () {
+      function cityToString(city) {
+        return city.name + " | " + city.country + " coordinates: [" + city.coord.lat.toFixed(1) + ", " + city.coord.lon.toFixed(1) + "] " + "|" + city.id;
+      };
+
+      autoBox = new AutocompleteBox(inputWrapper, [], "|");
+
+      autoController = new AutocompleteController(autoBox, cityToString);
       autoController.initListeners();
+
       var city = "London";
       var regex = new RegExp("^" + city, "i");
       input.value = city;
-      return autoController.getCityNames().then(function(list) {
+
+
+      return autoController.getCityNames(cityToString).then(function (list) {
         expect(list[0].match(regex)).to.exist;
       });
     });

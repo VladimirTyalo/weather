@@ -113,16 +113,16 @@ describe("Weather class", function () {
 
   describe("_getWeatherByLocation", function () {
     it("should fulfilled with correct params", function () {
-      return weather._queryWeatherByLocation(URL, WEATHER_API_KEY, {lat: 10, lon: 10}).should.eventually.fulfilled;
+      return weather._queryWeatherByLocation(URL, WEATHER_API_KEY, {"lon":-68.08,"lat":10.08}).should.eventually.fulfilled;
     });
 
     it("should fail with wrong params", function () {
       return weather._queryWeatherByLocation(URL, WEATHER_API_KEY, 10, 10).should.eventually.reject;
     });
     it("should return weather object with correct city name in it", function () {
-      return weather._queryWeatherByLocation(URL, WEATHER_API_KEY, {"lon": 33.733334, "lat": 44.416668})
+      return weather._queryWeatherByLocation(URL, WEATHER_API_KEY, {"lon":-68.083328,"lat":10.08333})
                     .then(function (weatherObj) {
-                      expect(weatherObj.list[0].name).to.be.equal("Laspi");
+                      expect(weatherObj.list[0].name).to.be.equal("Municipio Valencia");
                     });
     });
   });

@@ -1,13 +1,20 @@
 "use strict";
 
 // element - DOM wrapper element with  <input type='text'> element in it
-// list - array of string names to put into autocomplite popup box;
+// list - array of string names to put into autocomplete popup box
+// each string name might be separated into 3 parts with lineSplitter (for example "//")
+// like "part1 // part2  // part3"
+// part1 - goes to <input> tag
+// part1 + part2 - goes to autocomplete popup list item (optional)
+// part3 - goes to <input> and element item's "data-real-param" attribute and should be
+// basically unique ID of some querying data (optional)
+// lineSplitter -  separator to split list's string into 3 parts;
 
-function AutocompleteBox(element, list) {
+function AutocompleteBox(element, list, lineSplitter) {
   // deep clone of list
   var innerList = JSON.parse(JSON.stringify(list));
 
-  if (!(element instanceof Element)) throw new Error("element is not a DOM elment");
+  if (!(element instanceof Element)) throw new Error("element is not a DOM element");
   if (!Array.isArray(innerList)) throw new Error("list is not an array"); // ?? adopt to pseudo arrays
 
   var input = document.getElementsByTagName("input")[0];
@@ -18,6 +25,24 @@ function AutocompleteBox(element, list) {
 
   var popup;
   var activeItem;
+
+
+  function fillElementWithContent(el, index, string, separator) {
+    if(separator != "" && separator != undefined && string.indexOf(separator) >= 0) {
+      var cityParams = string.split(separator);
+      el.innerText = cityParams[0] + " " +  lineSplitter  +" " + cityParams[1];
+      el.setAttribute("data-real-param", cityParams[2]);
+    }
+    else {
+      el.innerText = string;
+    }
+
+    el.classList.add(POPUP_ITEM_CLASS);
+    if (index == 0) {
+      activeItem = el;
+      el.classList.add(POPUP_ITEM_ACTIVE_CLASS);
+    }
+  }
 
   function open() {
     var els = element.querySelectorAll("." + POPUP_CLASS);
@@ -36,15 +61,8 @@ function AutocompleteBox(element, list) {
       var el = document.createElement("div");
       el.setAttribute("data-index", index);
 
-      var cityParams = string.split("//");
+      fillElementWithContent(el, index, string, lineSplitter);
 
-      el.innerText = cityParams[0] + " | " + cityParams[1];
-      el.setAttribute("data-real-param", cityParams[2]);
-      el.classList.add(POPUP_ITEM_CLASS);
-      if (index == 0) {
-        activeItem = el;
-        el.classList.add(POPUP_ITEM_ACTIVE_CLASS);
-      }
       popup.appendChild(el);
     });
 
@@ -152,7 +170,15 @@ function AutocompleteBox(element, list) {
     var realQueryParameter = activeItem.getAttribute("data-real-param");
 
     input.setAttribute("value", activeVal);
-    input.value = activeVal.split("//")[0].trim();
+
+    if (lineSplitter != "" && lineSplitter != undefined) {
+      input.value = activeVal.split(lineSplitter)[0].trim();
+    }
+    else {
+      input.value = activeVal.trim();
+    }
+
+
     input.focus();
     input.setAttribute("data-real-param", realQueryParameter);
   }

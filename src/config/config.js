@@ -1,7 +1,6 @@
 "use strict";
 var config = {
   mongodb: {
-    url: "mongodb://Vladimir_T:22Styles22@ds053176.mlab.com:53176/city-locations",
     apiKey: "lcJsGxNcKZg9MPhRYIJaNphkm9CSPa7M",
     restfulURL: "https://api.mlab.com/api/1/"
   },

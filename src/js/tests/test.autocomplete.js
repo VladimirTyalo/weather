@@ -25,7 +25,7 @@ describe("test Autocomplete box", function () {
     input.setAttribute("value", "");
     input.value = "";
 
-    autocompleteBox = new AutocompleteBox(element, list);
+    autocompleteBox = new AutocompleteBox(element, list, "//");
     Array.prototype.slice.call(popup).forEach(function (el) {
       el.parentNode.removeChild(el);
     });

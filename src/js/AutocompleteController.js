@@ -8,8 +8,10 @@ var currentWeatherTable = document.getElementsByClassName("forecast__today")[0];
 var fiveDayForecastTable = document.getElementsByClassName("forecast__long-period")[0];
 var searchIcon = document.getElementById("search-icon");
 
+// autoBox - autocomplete box object
+// toAutoBoxItemFormat - function that excepts item object and converts it to string representation of this object (optional)
 
-function AutocompleteController(autoBox) {
+function AutocompleteController(autoBox, toAutoBoxItemFormat) {
 
   var keyActionMap = (autoBox !== undefined) ? {
     38: autoBox.prev,
@@ -17,9 +19,13 @@ function AutocompleteController(autoBox) {
     9: autoBox.select
   } : {};
 
-  var debouncedGetCityNames = debounce(getCityNames, 200);
+
+  var getItems = (toAutoBoxItemFormat) ? function () {return getCityNames.call(this, toAutoBoxItemFormat);} : getCityNames;
+  var debouncedGetCityNames = debounce(getItems, 200);
 
   function initListeners() {
+
+
     window.addEventListener("keydown", function (ev) {
       var key = ev.keyCode;
 
@@ -27,8 +33,6 @@ function AutocompleteController(autoBox) {
         ev.preventDefault();
       }
       if (keyActionMap[key]) keyActionMap[key]();
-
-
     });
 
     $("input").keyup(function (ev) {
@@ -42,9 +46,6 @@ function AutocompleteController(autoBox) {
 
       if ([9, 37, 38, 39, 40].indexOf(key) < 0) {
         $input.attr("data-real-param", null);
-
-
-
         debouncedGetCityNames()
           .then(function (list) {
             if (list.length === 0) {
@@ -56,7 +57,6 @@ function AutocompleteController(autoBox) {
           .catch(function (err) {
             console.log(err);
           });
-
       }
     });
 
@@ -76,7 +76,6 @@ function AutocompleteController(autoBox) {
       "&apiKey=", config.mongodb.apiKey
     ].join("");
 
-    console.log("Sanding request");
     return Promise.resolve($.ajax({
       url: url,
       type: 'GET',
@@ -86,11 +85,14 @@ function AutocompleteController(autoBox) {
   }
 
 
-  function getCityNames() {
+  function getCityNames(cityToString) {
     return getCities()
       .then(function (list) {
         return $.map(list, function (el) {
-          return cityToString(el);
+          if (typeof cityToString === 'function') {
+            return cityToString(el);
+          }
+          return _cityToString(el);
         });
       });
 
@@ -118,16 +120,16 @@ function AutocompleteController(autoBox) {
       return cashedResult;
 
 
-
     }
   }
 
 
-  function cityToString(cityObj) {
+  function _cityToString(cityObj) {
     if (cityObj) {
       var lat = cityObj.coord.lat.toFixed(1);
       var lon = cityObj.coord.lon.toFixed(1);
-      return cityObj.name + " // " + cityObj.country + " latitude: " + lat + " longitude: " + lon + "//" + cityObj.id;
+      var splitter = "//";
+      return cityObj.name + splitter + cityObj.country + " latitude: " + lat + " longitude: " + lon + splitter + cityObj.id;
     }
   }
 
