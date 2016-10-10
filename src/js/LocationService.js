@@ -1,7 +1,7 @@
 "use strict";
 
 function LocationService() {
-  LocationService.locationURL = "http://ipinfo.io/";
+  LocationService.locationURL = "https://ipinfo.io/";
 }
 
 LocationService.prototype = {

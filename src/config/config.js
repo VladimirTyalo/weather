@@ -5,10 +5,10 @@ var config = {
     restfulURL: "https://api.mlab.com/api/1/"
   },
   servers: {
-    idea: "http://localhost:63342"
+    idea: "https://localhost:63342"
   },
   weather: {
-    url: "http://api.openweathermap.org/data/2.5/",
+    url: "https://api.openweathermap.org/data/2.5/",
     apiKey: "d113902736c97ed02311db143b1d7e32"
   }
 };

@@ -22,9 +22,6 @@ app.set('view engine', 'html');
 app.set("views", path.join(__dirname,"/src"));
 
 
-
-
-
 app.use(function (req, res, next) {
   //// Website you wish to allow to connect
   //res.setHeader('Access-Control-Allow-Origin', config.servers.idea);
