@@ -6,14 +6,23 @@ var fs = require("fs");
 var bodyParser = require('body-parser');
 var PORT = process.env.port || 3000;
 var assert = require('assert');
+var path = require("path");
 
-var MongoClient = require("mongodb").MongoClient;
+//var MongoClient = require("mongodb").MongoClient;
 var config  = require("./src/config/config.js");
-var url = 'mongodb://<user>:<password>@ds053176.mlab.com:53176/city-locations';
-
+//var url = 'mongodb://<user>:<password>@ds053176.mlab.com:53176/city-locations';
 
 app.set("port", PORT);
+
 app.use(bodyParser.urlencoded({extended: true}));
+app.use(express.static(path.join(__dirname, '/src')));
+
+app.engine('html', require('ejs').renderFile);
+app.set('view engine', 'html');
+app.set("views", path.join(__dirname,"/src"));
+
+
+
 
 
 app.use(function (req, res, next) {
@@ -31,32 +40,36 @@ app.use(function (req, res, next) {
 });
 
 
-var fileContent = JSON.parse(fs.readFileSync("./src/js/vendor/iso-3166-country-codes.json", "utf-8"));
+//var fileContent = JSON.parse(fs.readFileSync("./src/js/vendor/iso-3166-country-codes.json", "utf-8"));
+//
+//var countryCodeMap = {};
+//
+//MongoClient.connect(url, function(err, db) {
+//  var collection = db.collection("cities");
+//
+//  //collection.count({"country-name": {$exists: true}}).then(function(count) {
+//  //    console.log(count);
+//  //    db.close();
+//  //});
+//
+//  fileContent["iso-codes"].forEach(function(el) {
+//    countryCodeMap[el.alpha2] = el.name;
+//    collection.updateMany({country: el.alpha2}, {$set: {"country-name": el.name}}, {upsert: true, w: 1}, function (err,
+//      data) {
+//      if (err) {
+//        console.log(err);
+//        return
+//      }
+//      console.log(data);
+//      db.close();
+//    });
+//  });
+//});
 
-var countryCodeMap = {};
 
-MongoClient.connect(url, function(err, db) {
-  var collection = db.collection("cities");
-
-  //collection.count({"country-name": {$exists: true}}).then(function(count) {
-  //    console.log(count);
-  //    db.close();
-  //});
-
-  fileContent["iso-codes"].forEach(function(el) {
-    countryCodeMap[el.alpha2] = el.name;
-    collection.updateMany({country: el.alpha2}, {$set: {"country-name": el.name}}, {upsert: true, w: 1}, function (err,
-      data) {
-      if (err) {
-        console.log(err);
-        return
-      }
-      console.log(data);
-      db.close();
-    });
-  });
+app.get("/", function(req,res) {
+  req.send(index);
 });
-
 
 app.get("/cities", function (req, res) {
   var name = req.query.name;
