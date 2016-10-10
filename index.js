@@ -6,6 +6,7 @@ var fs = require("fs");
 var bodyParser = require('body-parser');
 var assert = require('assert');
 var path = require("path");
+var request = require('request');
 
 var PORT = process.env.PORT || 3000;
 
@@ -26,7 +27,14 @@ app.get("/", function (req, res) {
 app.get("/weather/:param/", function (req, res) {
   var query = toQueryString(req);
   var url = "http://api.openweathermap.org/data/2.5/" + req.params.param + query;
-  res.redirect(url);
+
+  request(url, function (error, response, body) {
+    if (!error && response.statusCode == 200) {
+      res.send(JSON.parse(body));
+    }
+  })
+
+
 });
 
 
