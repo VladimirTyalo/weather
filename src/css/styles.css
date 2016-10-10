@@ -1,30 +1,34 @@
 body {
-  backgrond-color: #9ab4b6;
-  background-image: url("../img/sunny-min.jpg");
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat repeat;
   margin: 0;
   padding: 0;
+  transition: background-image .5s;
   color: white;
-  transition: background-image 0.5s;
-
+  background-image: url('../img/sunny-min.jpg');
+  background-repeat: no-repeat repeat;
+  background-position: center;
+  background-size: cover;
+  backgrond-color: #9ab4b6;
   /* customization of a scrollbar for IE */
   scrollbar-face-color: white;
-
 }
 
+::-webkit-input-placeholder {
+  /* Chrome/Opera/Safari */
+  color: antiquewhite;
+}
 
-::-webkit-input-placeholder { /* Chrome/Opera/Safari */
+::-moz-placeholder {
+  /* Firefox 19+ */
   color: antiquewhite;
 }
-::-moz-placeholder { /* Firefox 19+ */
+
+:-ms-input-placeholder {
+  /* IE 10+ */
   color: antiquewhite;
 }
-:-ms-input-placeholder { /* IE 10+ */
-  color: antiquewhite;
-}
-:-moz-placeholder { /* Firefox 18- */
+
+:-moz-placeholder {
+  /* Firefox 18- */
   color: antiquewhite;
 }
 
@@ -50,11 +54,8 @@ body {
 
 /*!* optionally, you can style the top and the bottom buttons (left and right for horizontal bars) *!*/
 /*::-webkit-scrollbar-corner {*/
-  /*background-color: #fff63f;*/
+/*background-color: #fff63f;*/
 /*}*/
-
-
-
 
 ul {
   margin: 0;
@@ -65,20 +66,20 @@ ul {
 .error {
   position: absolute;
   top: 0;
-  transform: translateY(-105%);
   left: 0;
+  padding: .4em;
+  transform: translateY(-105%);
   color: lightcoral;
-  background: rgba(255,255,255, 0.8);
   border: 1px solid lightcoral;
-  border-radius: 0.2em;
-  padding: 0.4em;
+  border-radius: .2em;
+  background: rgba(255, 255, 255, .8);
 }
 
 .container {
   max-width: 1050px;
   margin: 0 auto;
-  padding-left: 10px;
   padding-right: 10px;
+  padding-left: 10px;
 }
 
 .forecast .container {
@@ -87,8 +88,8 @@ ul {
 }
 
 .header {
-  padding: 2em 2% 2em 2%;
   margin-bottom: 9em;
+  padding: 2em 2% 2em 2%;
 }
 
 .header__title {
@@ -107,58 +108,56 @@ ul {
 }
 
 .header__search-icon {
-  cursor: pointer;
   position: absolute;
+  top: .6em;
   right: 10px;
-  top: 0.6em;
-  opacity: 0.8;
+  cursor: pointer;
+  opacity: .8;
 }
 
 .header__search-icon:hover {
-  opacity: 1;
   transform: scale(1.1);
+  opacity: 1;
 }
 
 .header__search-input {
   font-size: 2em;
   display: block;
+  box-sizing: border-box;
   width: 100%;
   margin: 30px auto;
   padding: 5px 70px 5px 20px;
-  box-sizing: border-box;
-  background: rgba(0, 0, 0, 0.3);
-  border: 2px solid white;
-  border-radius: 0.2em;
   color: white;
+  border: 2px solid white;
+  border-radius: .2em;
+  background: rgba(0, 0, 0, .3);
 }
 
 .forecast .container {
-  background: rgba(0, 0, 0, 0.3);
   padding-top: 20px;
+  background: rgba(0, 0, 0, .3);
 }
+
 .forecast__today {
-
   width: 50%;
-  list-style: none;
-  padding-left: 2%;
   padding-right: 2%;
+  padding-left: 2%;
+  list-style: none;
 }
-
-
 
 .forecast__item {
-  margin: 0;
-  padding: 5px 10px 5px 0px;
-  border-bottom: 2px solid darkgray;
   font-size: 1.5em;
-  display: flex;
   position: relative;
+  display: flex;
+  margin: 0;
+  padding: 5px 10px 5px 0;
+  border-bottom: 2px solid darkgray;
 }
 
 .forecast__today .forecast__icon img {
   position: absolute;
-  right: 0px;
   top: -3px;
+  right: 0;
 }
 
 .forecast__today .forecast__item span {
@@ -166,14 +165,14 @@ ul {
 }
 
 .forecast__val {
-  flex: 1 0;
   text-align: right;
+  flex: 1 0;
 }
 
 .forecast__long-period {
-  flex: 1 1 40%;
-  padding-left: 2%;
   padding-right: 2%;
+  padding-left: 2%;
+  flex: 1 1 40%;
 }
 
 .forecast__temp-val,
@@ -189,9 +188,9 @@ ul {
 
 .forecast__long-period .forecast__item {
   display: flex;
+  cursor: pointer;
   flex-flow: row nowrap;
   justify-content: flex-start;
-  cursor: pointer;
 }
 
 .visually-hidden {
@@ -204,84 +203,72 @@ ul {
   margin: 0 auto;
 }
 
-
-
 .autocomplete-box__popup {
   position: absolute;
   top: 120%;
   left: 0;
-  transition: all 0.3s;
   width: 100%;
-  background: rgba(0, 0, 0, 0.6);
+  transition: all .3s;
   border: 2px solid white;
-  border-radius: 0.2em;
+  border-radius: .2em;
+  background: rgba(0, 0, 0, .6);
 }
 
 .autocomplete-box__popup-item {
-  width: 100%;
   font-size: 1.5em;
-  padding: 10px 70px 10px 20px;
   box-sizing: border-box;
+  width: 100%;
+  padding: 10px 70px 10px 20px;
   cursor: pointer;
 }
 
-
 .autocomplete-box__popup-item--active {
-  background: rgba(20, 100, 20, 0.5);
   color: #dae9b5;
+  background: rgba(20, 100, 20, .5);
 }
 
 .forecast__long-period .forecast__item:hover {
   color: antiquewhite;
-  background: rgba(0, 0, 0, 0.5);
+  background: rgba(0, 0, 0, .5);
 }
 
 .forecast__long-period .forecast__week-day {
-  flex: 0 1 50px;
   margin-right: 10px;
+  flex: 0 1 50px;
 }
 
 .forecast__long-period .forecast__month-day {
-  flex: 0 1 50px;
   margin-right: 10px;
+  flex: 0 1 50px;
 }
 
 .forecast__long-period .forecast__icon {
-  flex: 1 1 100px;
   position: relative;
+  flex: 1 1 100px;
 }
 
 .forecast__long-period .forecast__icon img {
   position: absolute;
-  right: 0px;
   top: -3px;
+  right: 0;
 }
 
 .forecast__long-period .forecast__temperature {
-  flex: 0 1 100px;
   text-align: right;
+  flex: 0 1 100px;
 }
 
 @media (max-width: 65em) {
-
   .forecast__today {
     width: 100%;
     margin-bottom: 3em;
   }
 
- .forecast .container {
-   flex-wrap: wrap;
- }
+  .forecast .container {
+    flex-wrap: wrap;
+  }
 
-
- .autocomplete-box__popup {
-   font-size: 0.7rem;
- }
+  .autocomplete-box__popup {
+    font-size: .7rem;
+  }
 }
-
-
-
-
-
-
-

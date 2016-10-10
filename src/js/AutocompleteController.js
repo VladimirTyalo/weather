@@ -28,7 +28,7 @@ function AutocompleteController(autoBox, toAutoBoxItemFormat) {
       var key = ev.keyCode;
 
       if (key === 9) {
-        if(autoBox.getInputText() === "") return;
+        if (autoBox.getInputText() === "") return;
         ev.preventDefault();
       }
       if (keyActionMap[key]) keyActionMap[key]();
