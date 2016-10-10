@@ -65,7 +65,7 @@ app.use(function (req, res, next) {
 
 
 app.get("/", function(req,res) {
-  req.send(index);
+  res.send(index);
 });
 
 app.get("/cities", function (req, res) {
