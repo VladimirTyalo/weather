@@ -87,7 +87,7 @@ ul {
 }
 
 .header {
-  padding: 2em;
+  padding: 2em 2% 2em 2%;
   margin-bottom: 9em;
 }
 
@@ -110,7 +110,7 @@ ul {
   cursor: pointer;
   position: absolute;
   right: 10px;
-  top: 5px;
+  top: 0.6em;
   opacity: 0.8;
 }
 
@@ -172,8 +172,8 @@ ul {
 
 .forecast__long-period {
   flex: 1 1 40%;
-  padding-left: 10px;
-  padding-right: 10px;
+  padding-left: 2%;
+  padding-right: 2%;
 }
 
 .forecast__temp-val,
@@ -208,7 +208,7 @@ ul {
 
 .autocomplete-box__popup {
   position: absolute;
-  top: 4em;
+  top: 120%;
   left: 0;
   transition: all 0.3s;
   width: 100%;
@@ -260,6 +260,23 @@ ul {
 .forecast__long-period .forecast__temperature {
   flex: 0 1 100px;
   text-align: right;
+}
+
+@media (max-width: 65em) {
+
+  .forecast__today {
+    width: 100%;
+    margin-bottom: 3em;
+  }
+
+ .forecast .container {
+   flex-wrap: wrap;
+ }
+
+
+ .autocomplete-box__popup {
+   font-size: 0.7rem;
+ }
 }
 
 

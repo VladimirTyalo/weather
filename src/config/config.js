@@ -2,7 +2,8 @@
 var config = {
   mongodb: {
     apiKey: "lcJsGxNcKZg9MPhRYIJaNphkm9CSPa7M",
-    restfulURL: "https://api.mlab.com/api/1/"
+    restfulURL: "https://api.mlab.com/api/1/",
+    url: ""
   },
   servers: {
     idea: "http://localhost:63342"

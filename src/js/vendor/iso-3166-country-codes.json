@@ -1,0 +1,13 @@
+{
+  "listname" : "ISO 3166 Country Code List",
+  "created" : "2013-05-28",
+  "modified" : "2013-06-18",
+  "iso-codes" : [
+
+    {"name":"Curaçao","alpha2":"CW"}
+
+
+
+
+  ]
+}

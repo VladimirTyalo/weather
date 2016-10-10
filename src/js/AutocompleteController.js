@@ -125,7 +125,7 @@ function AutocompleteController(autoBox, toAutoBoxItemFormat) {
       var lat = cityObj.coord.lat.toFixed(1);
       var lon = cityObj.coord.lon.toFixed(1);
       var splitter = "//";
-      return cityObj.name + splitter + cityObj.country + " latitude: " + lat + " longitude: " + lon + splitter + cityObj.id;
+      return cityObj.name + splitter + cityObj["country-name"] + " latitude: " + lat + " longitude: " + lon + splitter + cityObj.id;
     }
   }
 
