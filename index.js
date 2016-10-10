@@ -4,7 +4,7 @@ var express = require("express");
 var app = express();
 var fs = require("fs");
 var bodyParser = require('body-parser');
-var PORT = process.env.port || 3000;
+var PORT = process.env.PORT || 3000;
 var assert = require('assert');
 var path = require("path");
 
