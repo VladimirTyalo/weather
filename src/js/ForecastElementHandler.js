@@ -1,7 +1,7 @@
 "use strict";
 
 var WEATHER_API_KEY = "d113902736c97ed02311db143b1d7e32";
-var WEATHER_SERVICE_URL = "https://api.openweathermap.org/data/2.5/";
+var WEATHER_SERVICE_URL = "/weather/";
 
 
 function ForecastElementHandler(elements, forecastList) {

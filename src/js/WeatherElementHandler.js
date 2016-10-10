@@ -18,7 +18,7 @@ function WeatherElementHandler(element, weatherObj) {
   this._element = element;
   this._weatherObj = this._makeSimpleWeahterObject(weatherObj);
   this._elementsMap = this._findByAttribute(this._element, "data-weather");
-  this._iconURl = "http://openweathermap.org/img/w/";
+  this._iconURl = "https://openweathermap.org/img/w/";
   this._cashIconElements = {};
 }
 

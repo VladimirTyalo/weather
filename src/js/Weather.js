@@ -1,6 +1,6 @@
 "use strict";
 
-var url = "https://api.openweathermap.org/data/2.5/";
+var url = "/weather/";
 
 function Weather(webServiceURL, WEATHER_API_KEY) {
   this._webServiceURL = webServiceURL;

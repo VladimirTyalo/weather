@@ -1,7 +1,7 @@
 "use strict";
 
 var WEATHER_API_KEY = "d113902736c97ed02311db143b1d7e32";
-var WEATHER_SERVICE_URL = "http://api.openweathermap.org/data/2.5/";
+var WEATHER_SERVICE_URL = "/weather/";
 
 var currentWeatherSection = document.querySelector(".forecast__today");
 var fiveDayForecastSection = document.querySelector(".forecast__long-period");
