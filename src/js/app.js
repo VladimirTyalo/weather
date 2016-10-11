@@ -21,9 +21,8 @@ var searchIcon = document.querySelector(".header__search-icon");
 
 autoBoxController.initListeners();
 
-searchIcon.addEventListener("click", submit);
-
-window.addEventListener("keypress", function pressEnter (ev) {
+window.addEventListener("click", clickHandler);
+window.addEventListener("keypress", function pressEnter(ev) {
   if (ev.keyCode === 13) {
     submit(ev);
   }
@@ -34,7 +33,7 @@ loc.getLocationByIP()
    .then(function (location) {
      return weather.fetchForecast(location);
    })
-   .then(function(forcastObj) {
+   .then(function (forcastObj) {
      $title.text(forcastObj.list[0].name);
      updateForecastView(forcastObj);
    })
@@ -57,15 +56,31 @@ function errorPopUp(err) {
   $error.delay(1500).fadeOut("slow", function () {
     $(this).remove();
   });
+}
 
+function clickHandler (ev) {
+  var target = ev.target;
+  var id = target.getAttribute("data-real-param");
+  // click on search icon
+  if (target == searchIcon) {
+    submit(ev);
+  } // click on one of the popup fields
+  else if (id && id != "undefined" && id != "null" && target != input) {
+    autoBox.setActive(id);
+    submit(ev);
+  } // click in any other area
+  else {
+    autoBox.close();
+  }
 }
 
 function submit(ev) {
+  autoBox.close();
   var id = input.getAttribute("data-real-param");
-  if (id != undefined && id !== "null" && id !== "undefined") {
+  if (id  && id !== "null" && id !== "undefined") {
 
     weather.fetchForecast(id)
-           .then(function(forcastObj) {
+           .then(function (forcastObj) {
              $title.text(forcastObj.city.name);
              updateForecastView(forcastObj);
            })
@@ -75,7 +90,7 @@ function submit(ev) {
   }
   else {
 
-    if(input.value == "" || input.value == undefined) {
+    if (input.value == "" || input.value == undefined) {
       errorPopUp();
       return;
     }
@@ -83,12 +98,19 @@ function submit(ev) {
                      .then(function (cities) {
                        return cities[0].id;
                      })
-                     .then(function(id){
+                     .then(function (id) {
                        return weather.fetchForecast(id);
                      })
-                     .then(function(forcastObj) {
-                       $title.text(forcastObj.city.name);
-                       updateForecastView(forcastObj);
+                     .then(function (forecastObj) {
+                       var cityName = forecastObj.city.name.toLowerCase();
+                       // if comment below code it will allow to peek first city from the list
+                       // even if it not fully typed
+                       if(cityName != input.value.toLowerCase()) {
+                         errorPopUp();
+                         throw new Error("no such city in database");
+                       }
+                       $title.text(forecastObj.city.name);
+                       updateForecastView(forecastObj);
                      })
                      .catch(errorPopUp)
                      .finally();

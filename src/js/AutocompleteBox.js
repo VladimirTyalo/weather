@@ -157,8 +157,8 @@ function AutocompleteBox(element, list, lineSplitter) {
 
   function update(newList) {
     var oldInput = input.value;
-    innerList = JSON.parse(JSON.stringify(newList));
     close();
+    innerList = JSON.parse(JSON.stringify(newList));
     open();
     input.value = oldInput;
   }

@@ -88,8 +88,8 @@ ul {
 }
 
 .header {
-  margin-bottom: 9em;
   padding: 2em 2% 2em 2%;
+  transition: all 0.3s;
 }
 
 .header__title {
@@ -109,14 +109,16 @@ ul {
 
 .header__search-icon {
   position: absolute;
-  top: .6em;
+  top: 50%;
+  width: 40px;
+  height: 40px;
+  transform: translateY(-20px);
   right: 10px;
   cursor: pointer;
-  opacity: .8;
+  opacity: .4;
 }
 
 .header__search-icon:hover {
-  transform: scale(1.1);
   opacity: 1;
 }
 
@@ -211,7 +213,8 @@ ul {
   transition: all .3s;
   border: 2px solid white;
   border-radius: .2em;
-  background: rgba(0, 0, 0, .6);
+  background: #6f6055;
+  z-index: 20;
 }
 
 .autocomplete-box__popup-item {
@@ -262,13 +265,47 @@ ul {
   .forecast__today {
     width: 100%;
     margin-bottom: 3em;
+    font-size: 2em;
   }
 
+  .forecast__today .forecast__icon img{
+    width: 2em;
+    height: 2em;
+    top: -0.4em;
+  }
   .forecast .container {
     flex-wrap: wrap;
   }
 
   .autocomplete-box__popup {
     font-size: .7rem;
+  }
+
+  .header__city-name {
+    font-size: 3em;
+    text-align: center;
+    width: 100%;
+  }
+
+  .header__search-input {
+    font-size: 5em;
+    padding-right: 2em;
+  }
+
+  .header__search-icon {
+    right: 1.5em;
+    top: 2.7em;
+    width: 4em;
+    height: 4em;
+    padding-right: 3em;
+    padding-left: 3em;
+  }
+
+  .autocomplete-box__popup {
+    font-size: 2.4em;
+  }
+  .autocomplete-box__popup-item {
+    padding: 10px 20px 10px 20px;
+    border-bottom: 1px solid #aaa9a1;
   }
 }
