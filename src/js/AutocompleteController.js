@@ -20,6 +20,7 @@ function AutocompleteController(autoBox, toAutoBoxItemFormat) {
   } : {};
 
 
+
   var getItems = (toAutoBoxItemFormat) ? function () {
     return getCityNames.call(this, toAutoBoxItemFormat);
   } : getCityNames;
@@ -42,36 +43,31 @@ function AutocompleteController(autoBox, toAutoBoxItemFormat) {
 
     var debouncedInputHandler = debounce(inputHandler, 300);
 
-    $(autoBox.getInputElement()).keyup(debouncedInputHandler);
+    $(autoBox.getInputElement()).on("input", debouncedInputHandler);
 
   }
 
   function inputHandler(ev) {
-    var key = ev.which;
-    var $input = $(this);
+    var $input = $(autoBox.getInputElement());
 
     if ($input.val() == "") {
+      ev.preventDefault();
       autoBox.close();
       return;
     }
 
-    // when typing in the input field trigger popup content changes
-    if ([9, 37, 38, 39, 40].indexOf(key) < 0) {
-      $input.attr("data-real-param", null);
-      getItems().then(function (list) {
-        // no records to put into autocomplete box => close it
-        // and clean data-real-param attribute of <input>
-        if (list.length === 0) {
-          autoBox.close();
-          autoBox.getInputElement().setAttribute("data-real-param", undefined);
-          return;
-        }
-        // update only if pressed key was not (enter or esc)
-        if (key != 13 && key != 27) {
-          autoBox.update(list);
-        }
-      });
-    }
+    $input.attr("data-real-param", null);
+    getItems().then(function (list) {
+      // no records to put into autocomplete box => close it
+      // and clean data-real-param attribute of <input>
+      if (list.length === 0) {
+        autoBox.close();
+        autoBox.getInputElement().setAttribute("data-real-param", undefined);
+        return;
+      }
+
+      autoBox.update(list);
+    });
   }
 
   function getCities() {
@@ -120,7 +116,7 @@ function AutocompleteController(autoBox, toAutoBoxItemFormat) {
 
       return new Promise(function exec(resolve, reject) {
         var delay = Date.now() - lastTime;
-        if(timer) {
+        if (timer) {
           clearInterval(timer);
         }
         if (delay > time) {
@@ -129,7 +125,7 @@ function AutocompleteController(autoBox, toAutoBoxItemFormat) {
           timer = undefined;
         }
         else {
-          timer = setTimeout(function(){
+          timer = setTimeout(function () {
             resolve(fn.apply(self, args));
           }, time - delay);
         }
