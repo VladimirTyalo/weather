@@ -75,6 +75,15 @@ ul {
   background: rgba(255, 255, 255, .8);
 }
 
+@keyframes fly {
+  0%, 100% {
+    transform: translateX(0);
+  }
+  50% {
+    transform: translateX(2em);
+  }
+}
+
 .container {
   max-width: 1050px;
   margin: 0 auto;
@@ -109,10 +118,9 @@ ul {
 
 .header__search-icon {
   position: absolute;
-  top: 50%;
+  top: 0.4em;
   width: 40px;
   height: 40px;
-  transform: translateY(-20px);
   right: 10px;
   cursor: pointer;
   opacity: .4;
@@ -159,7 +167,7 @@ ul {
 .forecast__today .forecast__icon img {
   position: absolute;
   top: -3px;
-  right: 0;
+  right: 2em;
 }
 
 .forecast__today .forecast__item span {
@@ -213,7 +221,8 @@ ul {
   transition: all .3s;
   border: 2px solid white;
   border-radius: .2em;
-  background: #6f6055;
+  background: #ffffff;
+  color: #2b2b2b;
   z-index: 20;
 }
 
@@ -253,7 +262,31 @@ ul {
 .forecast__long-period .forecast__icon img {
   position: absolute;
   top: -3px;
-  right: 0;
+  right: 2em;
+}
+
+.icon-animation-fly {
+  animation-name: fly;
+  animation-duration: 5s;
+  animation-iteration-count: infinite;
+}
+
+.forecast__long-period .forecast__item:nth-child(2) img {
+  animation-delay: -1s;
+}
+
+.forecast__long-period .forecast__item:nth-child(3) img {
+  animation-delay: -2s;
+}
+
+.forecast__long-period .forecast__item:nth-child(4) img {
+  animation-delay: -3s;
+}
+.forecast__long-period .forecast__item:nth-child(5) img {
+  animation-delay: -4s;
+}
+.forecast__long-period .forecast__item:nth-child(6) img {
+  animation-delay: -5s;
 }
 
 .forecast__long-period .forecast__temperature {
@@ -277,6 +310,36 @@ ul {
     flex-wrap: wrap;
   }
 
+
+  .forecast__long-period .forecast__item:first-child {
+    display: none;
+  }
+
+  .forecast__long-period .forecast__list {
+    display: flex;
+    flex-flow: row nowrap;
+  }
+
+  .forecast__long-period .forecast__item {
+    box-sizing: border-box;
+    width: 20%;
+    flex-flow: column-reverse nowrap;
+    font-size: 2.5em;
+    border-right: 1px solid white;
+  }
+
+  .forecast__long-period .forecast__icon img {
+    width: 3em;
+    height: 3em;
+  }
+
+  .forecast__long-period .forecast__item:last-child {
+    border-right: none;
+  }
+  .forecast__long-period .forecast__item div {
+    text-align: center;
+  }
+
   .autocomplete-box__popup {
     font-size: .7rem;
   }
@@ -294,7 +357,7 @@ ul {
 
   .header__search-icon {
     right: 1.5em;
-    top: 2.7em;
+    top:1.4em;
     width: 4em;
     height: 4em;
     padding-right: 3em;
@@ -307,5 +370,9 @@ ul {
   .autocomplete-box__popup-item {
     padding: 10px 20px 10px 20px;
     border-bottom: 1px solid #aaa9a1;
+  }
+
+  .error {
+   font-size: 3em;
   }
 }

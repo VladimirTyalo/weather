@@ -109,7 +109,15 @@ WeatherElementHandler.prototype = {
           case "icon":
           {
             var id = this._weatherObj[param];
-            this._elementsMap[param].appendChild(this._makeIconElement(id));
+            // to stop infinite animation
+            $(".forecast__icon").find("img").removeClass("icon-animation-fly");
+            document.body.offsetWidth;
+            var icon = this._makeIconElement(id);
+
+            this._elementsMap[param].appendChild(icon);
+
+            $(".forecast__icon").find("img").addClass("icon-animation-fly");
+
             break;
           }
           case "humidity":
@@ -139,7 +147,9 @@ WeatherElementHandler.prototype = {
   },
 
   _makeIconElement: function (id) {
-    if (this._cashIconElements[id]) return this._cashIconElements[id];
+    if (this._cashIconElements[id]) {
+      return this._cashIconElements[id];
+    }
 
     var elem = document.createElement("img");
     var url = this._iconURl + encodeURIComponent(id) + ".png";
