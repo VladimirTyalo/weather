@@ -40,34 +40,38 @@ function AutocompleteController(autoBox, toAutoBoxItemFormat) {
       }
     });
 
-    $(autoBox.getInputElement()).keyup(function (ev) {
-      var key = ev.which;
-      var $input = $(this);
+    var debouncedInputHandler = debounce(inputHandler, 300);
 
-      if ($input.val() == "") {
-        autoBox.close();
-        return;
-      }
+    $(autoBox.getInputElement()).keyup(debouncedInputHandler);
 
-      // when typing in the input field trigger popup content changes
-      if ([9, 37, 38, 39, 40].indexOf(key) < 0) {
-        $input.attr("data-real-param", null);
-        getItems().then(function (list) {
-          // no records to put into autocomplete box => close it
-          // and clean data-real-param attribute of <input>
-          if (list.length === 0) {
-            autoBox.close();
-            autoBox.getInputElement().setAttribute("data-real-param", undefined);
-            return;
-          }
-          // update only if pressed key was not (enter or esc)
-          if (key != 13 && key != 27) {
-            autoBox.update(list);
-          }
-        });
-      }
-    });
+  }
 
+  function inputHandler(ev) {
+    var key = ev.which;
+    var $input = $(this);
+
+    if ($input.val() == "") {
+      autoBox.close();
+      return;
+    }
+
+    // when typing in the input field trigger popup content changes
+    if ([9, 37, 38, 39, 40].indexOf(key) < 0) {
+      $input.attr("data-real-param", null);
+      getItems().then(function (list) {
+        // no records to put into autocomplete box => close it
+        // and clean data-real-param attribute of <input>
+        if (list.length === 0) {
+          autoBox.close();
+          autoBox.getInputElement().setAttribute("data-real-param", undefined);
+          return;
+        }
+        // update only if pressed key was not (enter or esc)
+        if (key != 13 && key != 27) {
+          autoBox.update(list);
+        }
+      });
+    }
   }
 
   function getCities() {
@@ -92,10 +96,8 @@ function AutocompleteController(autoBox, toAutoBoxItemFormat) {
     }));
   }
 
-
   function getCityNames(cityToString) {
-    var debouncedGetCities = debounce(getCities, 70);
-    return debouncedGetCities()
+    return getCities()
       .then(function (list) {
         return $.map(list, function (el) {
           if (typeof cityToString === 'function') {
@@ -104,30 +106,34 @@ function AutocompleteController(autoBox, toAutoBoxItemFormat) {
           return _cityToString(el);
         });
       });
-
   }
 
-  // evaluate function only if prev evaluation was later then "time" ago
-  // otherwise return previous result;
-  // this version don't take last entered result when it claimed in delay time interval
-  // TODO refactor to use Promises
+  // return promise which resolves only after specific amount of time
+  // with the parameters of the last call (successful or not)
   function debounce(fn, time) {
-    if (time <= 0) throw new Error("debouncing time should be greater then 0");
+    if (time <= 0) reject(new Error("debouncing time should be greater then 0"));
     var lastTime = -Infinity;
-    var cashedResult;
     var self = this;
-
-    return function debouncedFunction() {
-      var delay = Date.now() - lastTime;
+    var timer;
+    return function () {
       var args = Array.prototype.slice.call(arguments);
 
-      if (delay > time) {
-
-        cashedResult = fn.apply(self, args);
-        lastTime = Date.now();
-      }
-      return cashedResult;
-
+      return new Promise(function exec(resolve, reject) {
+        var delay = Date.now() - lastTime;
+        if(timer) {
+          clearInterval(timer);
+        }
+        if (delay > time) {
+          lastTime = Date.now();
+          resolve(fn.apply(self, args));
+          timer = undefined;
+        }
+        else {
+          timer = setTimeout(function(){
+            resolve(fn.apply(self, args));
+          }, time - delay);
+        }
+      });
 
     }
   }
