@@ -20,7 +20,9 @@ function AutocompleteController(autoBox, toAutoBoxItemFormat) {
   } : {};
 
 
-  var getItems = (toAutoBoxItemFormat) ? function () {return getCityNames.call(this, toAutoBoxItemFormat);} : getCityNames;
+  var getItems = (toAutoBoxItemFormat) ? function () {
+    return getCityNames.call(this, toAutoBoxItemFormat);
+  } : getCityNames;
 
   function initListeners() {
 
@@ -92,7 +94,8 @@ function AutocompleteController(autoBox, toAutoBoxItemFormat) {
 
 
   function getCityNames(cityToString) {
-    return getCities()
+    var debouncedGetCities = debounce(getCities, 100);
+    return debouncedGetCities()
       .then(function (list) {
         return $.map(list, function (el) {
           if (typeof cityToString === 'function') {

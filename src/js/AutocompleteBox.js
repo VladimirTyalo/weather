@@ -28,9 +28,9 @@ function AutocompleteBox(element, list, lineSplitter) {
 
 
   function fillElementWithContent(el, index, string, separator) {
-    if(separator != "" && separator != undefined && string.indexOf(separator) >= 0) {
+    if (separator != "" && separator != undefined && string.indexOf(separator) >= 0) {
       var cityParams = string.split(separator);
-      el.innerText = cityParams[0] + " " +  lineSplitter  +" " + cityParams[1];
+      el.innerText = cityParams[0] + " " + lineSplitter + " " + cityParams[1];
       el.setAttribute("data-real-param", cityParams[2]);
     }
     else {
@@ -47,12 +47,12 @@ function AutocompleteBox(element, list, lineSplitter) {
   function open() {
     var els = element.querySelectorAll("." + POPUP_CLASS);
     if (els.length >= 1) return;
-
+    var listLenght = innerList.length;
 
     popup = document.createElement("div");
     popup.classList.add(POPUP_CLASS);
     popup.setAttribute("id", "popup");
-    popup.style.height = "11em";
+    popup.style.height = (listLenght < 5) ? listLenght * 3 + "em" : "15em";
     popup.style["overflow-y"] = "scroll";
 
 
