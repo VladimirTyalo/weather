@@ -94,7 +94,6 @@ function AutocompleteBox(element, list, lineSplitter) {
     activeItem = undefined;
     input.setAttribute("value", "");
     input.value = "";
-    input.setAttribute("data-real-param", undefined);
     input.value = oldInput;
   }
 
