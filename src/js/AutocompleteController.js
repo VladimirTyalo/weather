@@ -94,7 +94,7 @@ function AutocompleteController(autoBox, toAutoBoxItemFormat) {
 
 
   function getCityNames(cityToString) {
-    var debouncedGetCities = debounce(getCities, 100);
+    var debouncedGetCities = debounce(getCities, 70);
     return debouncedGetCities()
       .then(function (list) {
         return $.map(list, function (el) {

@@ -209,8 +209,8 @@ function cityToString(city) {
   return [
     city.name,
     " | ", city["country-name"],
-    " coordinates: [",
-    city.coord.lat.toFixed(1), ", ", city.coord.lon.toFixed(1), "] ",
+    //" coordinates: [",
+    //city.coord.lat.toFixed(1), ", ", city.coord.lon.toFixed(1), "] ",
     "|", city.id
   ].join("");
 }
