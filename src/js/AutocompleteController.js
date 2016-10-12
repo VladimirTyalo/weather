@@ -41,7 +41,7 @@ function AutocompleteController(autoBox, toAutoBoxItemFormat) {
       }
     });
 
-    var debouncedInputHandler = debounce(inputHandler, 300);
+    var debouncedInputHandler = debounce(inputHandler, 150);
 
     $(autoBox.getInputElement()).on("input", debouncedInputHandler);
 
@@ -121,8 +121,8 @@ function AutocompleteController(autoBox, toAutoBoxItemFormat) {
         }
         if (delay > time) {
           lastTime = Date.now();
-          resolve(fn.apply(self, args));
           timer = undefined;
+          resolve(fn.apply(self, args));
         }
         else {
           timer = setTimeout(function () {
