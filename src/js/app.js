@@ -13,6 +13,7 @@ var defferedForecastObject; // should probably be initialized before user click 
 var inputWrapper = document.querySelector(".header__search");
 var input = inputWrapper.querySelector("input");
 var $title = $(".header__city-name");
+var $country = $(".header__country");
 
 var autoBox = new AutocompleteBox(inputWrapper, [], "|");
 var autoBoxController = new AutocompleteController(autoBox, cityToString);
@@ -33,9 +34,10 @@ loc.getLocationByIP()
    .then(function (location) {
      return weather.fetchForecast(location);
    })
-   .then(function (forcastObj) {
-     $title.text(forcastObj.list[0].name);
-     updateForecastView(forcastObj);
+   .then(function (forecastObj) {
+     $title.text(forecastObj.list[0].name);
+     $country.text(forecastObj.city.country);
+     updateForecastView(forecastObj);
    })
    .catch(function (err) {
      errorPopUp();
@@ -79,9 +81,10 @@ function submit(ev) {
   if (id  && id !== "null" && id !== "undefined") {
 
     weather.fetchForecast(id)
-           .then(function (forcastObj) {
-             $title.text(forcastObj.city.name);
-             updateForecastView(forcastObj);
+           .then(function (forecastObj) {
+             $title.text(forecastObj.city.name);
+             $country.text(forecastObj.city.country);
+             updateForecastView(forecastObj);
            })
            .catch(errorPopUp)
            .finally();
@@ -109,6 +112,7 @@ function submit(ev) {
                          throw new Error("no such city in database");
                        }
                        $title.text(forecastObj.city.name);
+                       $country.text(forecastObj.city.country);
                        updateForecastView(forecastObj);
                      })
                      .catch(errorPopUp)
@@ -143,16 +147,16 @@ function setBackground(element, weatherObj) {
   var img;
   switch (generalDescription) {
     case "clouds" :
-      img = "img/storm-min.jpg";
+      img = "img/storm.jpg";
       break;
     case "rain":
-      img = "img/rain-min.jpg";
+      img = "img/rainy-leaves.jpg";
       break;
     case "snow":
       img = "img/snow-min.jpg";
       break;
     default:
-      img = "img/sunny-min.jpg";
+      img = "img/sky.jpg";
   }
 
   element.style["background-image"] = "url(" + img + ")";

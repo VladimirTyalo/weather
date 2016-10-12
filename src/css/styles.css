@@ -86,7 +86,7 @@ ul {
 }
 
 .container {
-  max-width: 1050px;
+  max-width: 900px;
   margin: 0 auto;
   padding-right: 10px;
   padding-left: 10px;
@@ -109,7 +109,7 @@ ul {
 }
 
 .header__city-name,
-.header__date {
+.header__country {
   width: 50%;
 }
 
@@ -360,11 +360,13 @@ ul {
     font-size: .7rem;
   }
 
-  .header__city-name {
+  .header__city-name,
+  .header__country {
     font-size: 1.5em;
     width: 100%;
     text-align: center;
   }
+
 
   .header__search-input {
     font-size: 1.2rem;
