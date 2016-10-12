@@ -62,7 +62,7 @@ WeatherElementHandler.prototype = {
   _makeSimpleWeahterObject(obj) {
     if(!obj) throw new Error("Illegal object weather");
     return {
-      temp: (obj.main && obj.main.temp) ? obj.main.temp : "",
+      temp: (obj.main && obj.main.temp) ? obj.main.temp.toFixed(1) : "",
       time: (obj.dt) ? +obj.dt * 1000 : "",
       humidity: (obj.main && obj.main.humidity) ? obj.main.humidity : "",
       wind: (obj.wind && obj.wind.speed) ? obj.wind.speed : "",
@@ -132,7 +132,7 @@ WeatherElementHandler.prototype = {
           }
           case "pressure":
           {
-            this._elementsMap[param].innerText = this._weatherObj[param] + "hPa";
+            this._elementsMap[param].innerText = this._weatherObj[param].toFixed(1) + "hPa";
             break;
           }
           default:
