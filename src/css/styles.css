@@ -97,8 +97,9 @@ ul {
 }
 
 .header {
-  padding: 2em 2% 2em 2%;
+  padding: 2rem 2% 2rem 2%;
   transition: all .3s;
+  font-size: 2rem;
 }
 
 .header__title {

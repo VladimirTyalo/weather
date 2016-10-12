@@ -110,25 +110,18 @@ function AutocompleteController(autoBox, toAutoBoxItemFormat) {
     if (time <= 0) reject(new Error("debouncing time should be greater then 0"));
     var lastTime = -Infinity;
     var self = this;
-    var timer;
+
     return function () {
       var args = Array.prototype.slice.call(arguments);
 
       return new Promise(function exec(resolve, reject) {
         var delay = Date.now() - lastTime;
-        if (timer) {
-          clearInterval(timer);
-        }
         if (delay > time) {
           lastTime = Date.now();
-          timer = undefined;
+
           resolve(fn.apply(self, args));
         }
-        else {
-          timer = setTimeout(function () {
-            resolve(fn.apply(self, args));
-          }, time - delay);
-        }
+
       });
 
     }
