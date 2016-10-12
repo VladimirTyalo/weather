@@ -152,9 +152,6 @@ function setBackground(element, weatherObj) {
     case "snow":
       img = "img/snow-min.jpg";
       break;
-    case "default":
-      img = "img/sunny-min.jpg";
-      break;
     default:
       img = "img/sunny-min.jpg";
   }
