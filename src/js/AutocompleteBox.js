@@ -163,7 +163,7 @@ function AutocompleteBox(element, list, lineSplitter) {
   }
 
   function select() {
-    var activeVal = activeItem.innerText;
+    var activeVal = (activeItem)? activeItem.innerText : "";
     var realQueryParameter = activeItem.getAttribute("data-real-param");
 
     input.setAttribute("value", activeVal);

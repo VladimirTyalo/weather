@@ -48,7 +48,6 @@ forecastListenerInit(fiveDayForecastSection);
 // helper functions
 
 function errorPopUp(err) {
-  console.log(err);
   var $error = $("<div>Can't find this city in database. Please enter another city!</div>");
   $error.addClass("error");
   $(inputWrapper).prepend($error);
