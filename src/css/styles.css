@@ -3,11 +3,10 @@ body {
   padding: 0;
   transition: background-image .5s;
   color: white;
-  background-image: url('../img/sunny-min.jpg');
+  backgrond-color: #819cab;
   background-repeat: no-repeat repeat;
   background-position: center;
   background-size: cover;
-  backgrond-color: #9ab4b6;
   /* customization of a scrollbar for IE */
   scrollbar-face-color: white;
 }
@@ -103,7 +102,6 @@ ul {
 }
 
 .header__title {
-  font-size: 3em;
   display: flex;
   flex-flow: row wrap;
 }
