@@ -16,6 +16,3 @@ var config = {
     apiKey: "d113902736c97ed02311db143b1d7e32"
   }
 };
-//if(global) {
-//  module.exports = config;
-//}

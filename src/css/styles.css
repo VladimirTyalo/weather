@@ -105,11 +105,15 @@ ul {
 .header__title {
   display: flex;
   flex-flow: row wrap;
+  background: rgba(0, 0,0, 0.4);
+  border-radius: 0.4em;
 }
 
 .header__city-name,
 .header__country {
   width: 50%;
+  box-sizing: border-box;
+  padding-left: 1.5rem;
 }
 
 .header__search {
@@ -298,6 +302,7 @@ ul {
     font-size: 2rem;
     width: 100%;
     margin-bottom: 3rem;
+    overflow: hidden;
   }
 
   .forecast__today .forecast__icon img {
@@ -310,6 +315,7 @@ ul {
   .forecast .container {
     flex-wrap: wrap;
   }
+
 
   .forecast__long-period .forecast__month {
     display: none;
@@ -340,7 +346,7 @@ ul {
   }
 
   .forecast__long-period .forecast__icon {
-    right: -1.5rem;
+    right: 0rem;
   }
 
   .forecast__long-period .forecast__item:last-child {

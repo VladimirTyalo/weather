@@ -39,10 +39,10 @@ describe("AutocompleteController() ", function () {
       return expect(autoController.getCities()).to.eventually.fulfilled;
     });
 
-    it("should contain object with city name as first object ", function () {
+    it("should return promise contain object with city name as first object ", function () {
       var city = "London";
       input.value = city;
-      return autoController.getCities().then(function (data) {
+      return autoController.getCities(city).then(function (data) {
         var result = data[0].name;
         expect(result).to.equal(city);
       });

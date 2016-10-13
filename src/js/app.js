@@ -14,7 +14,7 @@ var inputWrapper = document.querySelector(".header__search");
 var input = inputWrapper.querySelector("input");
 var $title = $(".header__city-name");
 var $country = $(".header__country");
-var $popup = $(".autocomplete-box__popup");
+var $window = $(window);
 
 var autoBox = new AutocompleteBox(inputWrapper, [], "|");
 var autoBoxController = new AutocompleteController(autoBox, cityToString);
@@ -23,11 +23,12 @@ var searchIcon = document.querySelector(".header__search-icon");
 
 autoBoxController.initListeners();
 
-$popup.on("click", clickHandler);
-
-window.addEventListener("keypress", function pressEnter(ev) {
+$window.on("click", clickHandler);
+$window.on("keydown", function (ev) {
   if (ev.keyCode === 13) {
     submit(ev);
+    autoBox.close();
+    return;
   }
 });
 
@@ -39,8 +40,8 @@ loc.getLocationByIP()
    .then(function (forecastObj) {
      $title.text(forecastObj.list[0].name);
      $country.text(forecastObj.city.country);
-     updateForecastView(forecastObj);
-   })
+     return forecastObj;
+   }).then(updateForecastView)
    .catch(function (err) {
      errorPopUp();
    })
@@ -61,33 +62,40 @@ function errorPopUp(err) {
   });
 }
 
-function clickHandler (ev) {
+function clickHandler(ev) {
   var target = ev.target;
+
   var id = target.getAttribute("data-real-param");
   // click on search icon
   if (target == searchIcon) {
-    submit(ev);
+    console.log("Icons clicked");
+    submit(ev)
+
   } // click on one of the popup fields
-  else if (id && id != "undefined" && id != "null" && target != input) {
-    autoBox.setActive(id);
-    submit(ev);
-  } // click in any other area
-  else {
-    autoBox.close();
+  else if( id != undefined && id != "null" && id != "undefined") {
+    console.log("popup cliced");
+    Promise.resolve(autoBox.setActive(id))
+           .then(function () {submit(ev)});
   }
+  // close popup in any case
+  autoBox.close();
+
+
 }
 
 function submit(ev) {
-  autoBox.close();
+
   var id = input.getAttribute("data-real-param");
+  console.log(id);
   if (id  && id !== "null" && id !== "undefined") {
 
     weather.fetchForecast(id)
            .then(function (forecastObj) {
              $title.text(forecastObj.city.name);
              $country.text(forecastObj.city.country);
-             updateForecastView(forecastObj);
+             return updateForecastView(forecastObj);
            })
+           .then(autoBox.close)
            .catch(errorPopUp)
            .finally();
 
@@ -98,7 +106,7 @@ function submit(ev) {
       errorPopUp();
       return;
     }
-    autoBoxController.getCities()
+    autoBoxController.getCities(input.value)
                      .then(function (cities) {
                        return cities[0].id;
                      })
@@ -109,31 +117,38 @@ function submit(ev) {
                        var cityName = forecastObj.city.name.toLowerCase();
                        // if comment below code it will allow to peek first city from the list
                        // even if it not fully typed
-                       if(cityName != input.value.toLowerCase()) {
+                       console.log(forecastObj);
+                       if (cityName != input.value.toLowerCase()) {
                          errorPopUp();
                          throw new Error("no such city in database");
                        }
                        $title.text(forecastObj.city.name);
                        $country.text(forecastObj.city.country);
-                       updateForecastView(forecastObj);
+                       return forecastObj
                      })
+                     .then(updateForecastView)
+                     .then(autoBox.close)
                      .catch(errorPopUp)
                      .finally();
   }
 }
 
 function updateForecastView(forecastObj) {
-  var forecastElements = document.querySelectorAll("[data-weather='forecast']");
-  defferedForecastObject = forecastObj;
-  var forecastHandler = new ForecastElementHandler(forecastElements, forecastObj.list);
 
-  var weatherObj = forecastObj.list[0];
+  return Promise.resolve((function () {
 
-  setBackground(document.body, weatherObj);
-  var weatherElementHandler = new WeatherElementHandler(currentWeatherSection, weatherObj);
+    var forecastElements = document.querySelectorAll("[data-weather='forecast']");
+    defferedForecastObject = forecastObj;
+    var forecastHandler = new ForecastElementHandler(forecastElements, forecastObj.list);
 
-  forecastHandler.updateView();
-  weatherElementHandler.updateView();
+    var weatherObj = forecastObj.list[0];
+
+    setBackground(document.body, weatherObj);
+    var weatherElementHandler = new WeatherElementHandler(currentWeatherSection, weatherObj);
+
+    forecastHandler.updateView();
+    weatherElementHandler.updateView();
+  })());
 }
 
 

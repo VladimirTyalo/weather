@@ -20,6 +20,9 @@ function AutocompleteController(autoBox, toAutocompleteString) {
   } : {};
 
 
+  var citiesCash = {};
+
+
   var getItems = (toAutocompleteString) ? function () {
     return getCityNames.call(this, toAutocompleteString);
   } : getCityNames;
@@ -43,7 +46,6 @@ function AutocompleteController(autoBox, toAutocompleteString) {
     var debouncedInputHandler = debounce(inputHandler, 1050);
 
     $(autoBox.getInputElement()).on("input", debouncedInputHandler);
-
   }
 
   function inputHandler(ev) {
@@ -69,23 +71,9 @@ function AutocompleteController(autoBox, toAutocompleteString) {
     });
   }
 
-  function memoize(func) {
-    var memo = {};
-    var slice = Array.prototype.slice;
-
-    return function() {
-      var args = slice.call(arguments);
-      var key = JSON.stringify(args);
-      if (key in memo)
-        return memo[key];
-      else
-        return (memo[key] = func.apply(this, args));
-    }
-  }
-
-  var getCitiesMemoized = memoize(getCities);
 
   function getCities(partialName) {
+
     var pattern = "^" + partialName;
     var query = '{name:{$regex:"' + pattern + '",$options:"i"}}';
     var sort = '{name: 1}';
@@ -98,16 +86,24 @@ function AutocompleteController(autoBox, toAutocompleteString) {
       "&apiKey=", config.mongodb.apiKey
     ].join("");
 
-    return Promise.resolve($.ajax({
+    // check cash first
+    if (partialName in citiesCash) {
+      return Promise.resolve(citiesCash[partialName]);
+    }
+
+    citiesCash[partialName] = Promise.resolve($.ajax({
       url: url,
       type: 'GET',
       crossDomain: true,
       dataType: 'json'
     }));
+
+    return citiesCash[partialName];
   }
 
+
   function getCityNames(cityToString) {
-    return getCitiesMemoized(autoBox.getInputText())
+    return getCities(autoBox.getInputText())
       .then(function (list) {
         return $.map(list, function (el) {
           if (typeof cityToString === 'function') {
@@ -117,7 +113,6 @@ function AutocompleteController(autoBox, toAutocompleteString) {
         });
       });
   }
-
 
 
   // return promise which resolves only after specific amount of time
