@@ -24,6 +24,10 @@ autoBoxController.initListeners();
 
 $body.on("click", clickHandler);
 
+$(function() {
+  FastClick.attach(document.body);
+});
+
 window.addEventListener("keypress", function pressEnter(ev) {
   if (ev.keyCode === 13) {
     submit(ev);
