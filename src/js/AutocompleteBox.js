@@ -52,7 +52,7 @@ function AutocompleteBox(element, list, lineSplitter) {
     popup = document.createElement("div");
     popup.classList.add(POPUP_CLASS);
     popup.setAttribute("id", "popup");
-    popup.style.height = (listLenght < 5) ? listLenght * 3 + "em" : "15em";
+    popup.style.height = (listLenght < 5) ? listLenght * 3 + "rem" : "15rem";
     popup.style["overflow-y"] = "scroll";
 
 

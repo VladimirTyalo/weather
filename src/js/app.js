@@ -14,6 +14,7 @@ var inputWrapper = document.querySelector(".header__search");
 var input = inputWrapper.querySelector("input");
 var $title = $(".header__city-name");
 var $country = $(".header__country");
+var $popup = $(".autocomplete-box__popup");
 
 var autoBox = new AutocompleteBox(inputWrapper, [], "|");
 var autoBoxController = new AutocompleteController(autoBox, cityToString);
@@ -22,7 +23,8 @@ var searchIcon = document.querySelector(".header__search-icon");
 
 autoBoxController.initListeners();
 
-window.addEventListener("click", clickHandler);
+$popup.on("click", clickHandler);
+
 window.addEventListener("keypress", function pressEnter(ev) {
   if (ev.keyCode === 13) {
     submit(ev);

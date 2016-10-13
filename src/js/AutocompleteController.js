@@ -9,9 +9,9 @@ var config = config;
 //var searchIcon = document.getElementById("search-icon");
 
 // autoBox - autocomplete box object
-// toAutoBoxItemFormat - function that excepts item object and converts it to string representation of this object (optional)
+// toAutocompleteString - function that excepts item object and converts it to string representation of this object (optional)
 
-function AutocompleteController(autoBox, toAutoBoxItemFormat) {
+function AutocompleteController(autoBox, toAutocompleteString) {
 
   var keyActionMap = (autoBox !== undefined) ? {
     38: autoBox.prev,
@@ -20,9 +20,8 @@ function AutocompleteController(autoBox, toAutoBoxItemFormat) {
   } : {};
 
 
-
-  var getItems = (toAutoBoxItemFormat) ? function () {
-    return getCityNames.call(this, toAutoBoxItemFormat);
+  var getItems = (toAutocompleteString) ? function () {
+    return getCityNames.call(this, toAutocompleteString);
   } : getCityNames;
 
   function initListeners() {
@@ -41,7 +40,7 @@ function AutocompleteController(autoBox, toAutoBoxItemFormat) {
       }
     });
 
-    var debouncedInputHandler = debounce(inputHandler, 150);
+    var debouncedInputHandler = debounce(inputHandler, 1050);
 
     $(autoBox.getInputElement()).on("input", debouncedInputHandler);
 
@@ -70,8 +69,23 @@ function AutocompleteController(autoBox, toAutoBoxItemFormat) {
     });
   }
 
-  function getCities() {
-    var partialName = autoBox.getInputText();
+  function memoize(func) {
+    var memo = {};
+    var slice = Array.prototype.slice;
+
+    return function() {
+      var args = slice.call(arguments);
+      var key = JSON.stringify(args);
+      if (key in memo)
+        return memo[key];
+      else
+        return (memo[key] = func.apply(this, args));
+    }
+  }
+
+  var getCitiesMemoized = memoize(getCities);
+
+  function getCities(partialName) {
     var pattern = "^" + partialName;
     var query = '{name:{$regex:"' + pattern + '",$options:"i"}}';
     var sort = '{name: 1}';
@@ -93,7 +107,7 @@ function AutocompleteController(autoBox, toAutoBoxItemFormat) {
   }
 
   function getCityNames(cityToString) {
-    return getCities()
+    return getCitiesMemoized(autoBox.getInputText())
       .then(function (list) {
         return $.map(list, function (el) {
           if (typeof cityToString === 'function') {
@@ -104,26 +118,42 @@ function AutocompleteController(autoBox, toAutoBoxItemFormat) {
       });
   }
 
+
+
   // return promise which resolves only after specific amount of time
   // with the parameters of the last call (successful or not)
   function debounce(fn, time) {
     if (time <= 0) reject(new Error("debouncing time should be greater then 0"));
     var lastTime = -Infinity;
     var self = this;
+    var timeHandler;
 
     return function () {
       var args = Array.prototype.slice.call(arguments);
 
-      return new Promise(function exec(resolve, reject) {
+      return new Promise(function executor(resolve, reject) {
         var delay = Date.now() - lastTime;
-        if (delay > time) {
-          lastTime = Date.now();
-
-          resolve(fn.apply(self, args));
+        if (timeHandler) {
+          clearInterval(timeHandler);
         }
-
+        if (delay > time) {
+          timeHandler = undefined;
+          lastTime = Date.now();
+          var result;
+          try {
+            result = fn.apply(self, args);
+          }
+          catch (e) {
+            reject(new Error(e));
+          }
+          resolve(result);
+        }
+        else {
+          timeHandler = setTimeout(function () {
+            resolve(fn.apply(self, args))
+          }, time - delay);
+        }
       });
-
     }
   }
 
