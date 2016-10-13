@@ -40,7 +40,7 @@ function AutocompleteController(autoBox, toAutocompleteString) {
       }
     });
 
-    var debouncedInputHandler = debounce(inputHandler, 100);
+    var debouncedInputHandler = debounce(inputHandler, 1050);
 
     $(autoBox.getInputElement()).on("input", debouncedInputHandler);
 

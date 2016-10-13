@@ -11,17 +11,6 @@ body {
   scrollbar-face-color: white;
 }
 
-
-/* Preload background images */
-body:after{
-  position:absolute; width:0; height:0; overflow:hidden; z-index:-1;
-  content:
-      url("../img/rainy-leaves.jpg")
-      url("../img/sky.jpg")
-      url("../img/snow-min.jpg")
-      url("../img/storm.jpg");
-}
-
 ::-webkit-input-placeholder {
   /* Chrome/Opera/Safari */
   color: antiquewhite;
@@ -129,7 +118,7 @@ ul {
 
 .header__search-icon {
   position: absolute;
-  top: .4rem;
+  top: .4em;
   right: 10px;
   width: 40px;
   height: 40px;
