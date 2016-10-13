@@ -24,7 +24,7 @@ var searchIcon = document.querySelector(".header__search-icon");
 autoBoxController.initListeners();
 
 $window.on("click", clickHandler);
-$window.on("keydown", function (ev) {
+$window.on("keyup", function (ev) {
   if (ev.keyCode === 13) {
     submit(ev);
     autoBox.close();
