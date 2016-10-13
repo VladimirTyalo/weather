@@ -68,7 +68,7 @@ function AutocompleteBox(element, list, lineSplitter) {
 
     element.appendChild(popup);
 
-    popup.addEventListener("click", popupClickHandler);
+    $(popup).on("click", popupClickHandler);
   }
 
 

@@ -182,7 +182,7 @@ function setBackground(element, weatherObj) {
 
 function forecastListenerInit(element) {
 
-  element.addEventListener("click", function (ev) {
+  $(element).on("click", function (ev) {
     ev.preventDefault();
     var target = getAncestor(ev.target, function (el) {
       return el.classList.contains("forecast__item");

@@ -29,7 +29,7 @@ function AutocompleteController(autoBox, toAutocompleteString) {
 
   function initListeners() {
 
-    window.addEventListener("keyup", function (ev) {
+    $(window).on("keyup", function (ev) {
       var key = ev.keyCode;
 
       if (key === 9) {
