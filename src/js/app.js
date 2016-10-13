@@ -14,7 +14,8 @@ var inputWrapper = document.querySelector(".header__search");
 var input = inputWrapper.querySelector("input");
 var $title = $(".header__city-name");
 var $country = $(".header__country");
-var $body = $(document.body);
+var $popup = $(".autocomplete-box__popup");
+
 var autoBox = new AutocompleteBox(inputWrapper, [], "|");
 var autoBoxController = new AutocompleteController(autoBox, cityToString);
 var searchIcon = document.querySelector(".header__search-icon");
@@ -22,7 +23,7 @@ var searchIcon = document.querySelector(".header__search-icon");
 
 autoBoxController.initListeners();
 
-$body.on("click", clickHandler);
+$popup.on("click", clickHandler);
 
 $(function() {
   FastClick.attach(document.body);
@@ -84,10 +85,12 @@ function submit(ev) {
   autoBox.close();
   var id = input.getAttribute("data-real-param");
   if (id  && id !== "null" && id !== "undefined") {
+
     weather.fetchForecast(id)
-           .then(function (forcastObj) {
-             $title.text(forcastObj.city.name);
-             updateForecastView(forcastObj);
+           .then(function (forecastObj) {
+             $title.text(forecastObj.city.name);
+             $country.text(forecastObj.city.country);
+             updateForecastView(forecastObj);
            })
            .catch(errorPopUp)
            .finally();
@@ -99,8 +102,7 @@ function submit(ev) {
       errorPopUp();
       return;
     }
-
-    autoBoxController.getCities(input.value)
+    autoBoxController.getCities()
                      .then(function (cities) {
                        return cities[0].id;
                      })
@@ -116,6 +118,7 @@ function submit(ev) {
                          throw new Error("no such city in database");
                        }
                        $title.text(forecastObj.city.name);
+                       $country.text(forecastObj.city.country);
                        updateForecastView(forecastObj);
                      })
                      .catch(errorPopUp)

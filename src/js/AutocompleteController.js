@@ -83,7 +83,7 @@ function AutocompleteController(autoBox, toAutocompleteString) {
     }
   }
 
-
+  var getCitiesMemoized = memoize(getCities);
 
   function getCities(partialName) {
     var pattern = "^" + partialName;
@@ -106,10 +106,8 @@ function AutocompleteController(autoBox, toAutocompleteString) {
     }));
   }
 
-  var memoCities = memoize(getCities);
-
   function getCityNames(cityToString) {
-    return memoCities(autoBox.getInputText())
+    return getCitiesMemoized(autoBox.getInputText())
       .then(function (list) {
         return $.map(list, function (el) {
           if (typeof cityToString === 'function') {
