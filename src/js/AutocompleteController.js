@@ -32,21 +32,24 @@ function AutocompleteController(autoBox, toAutocompleteString) {
     $(window).on("keyup", function (ev) {
       var key = ev.keyCode;
 
+
       if (key === 9) {
         if (autoBox.getInputText() === "") return;
         ev.preventDefault();
       }
-      if (keyActionMap[key]) keyActionMap[key]();
+      if (keyActionMap[key]) {
+
+        keyActionMap[key]();
+      }
 
       if (key == 13 || key == 27) {
         autoBox.close();
       }
     });
 
-    //var debouncedInputHandler = debounce(inputHandler, 1050);
+    var debouncedInputHandler = debounce(inputHandler, 1050);
 
-    //$(autoBox.getInputElement()).on("input", debouncedInputHandler);
-    $(autoBox.getInputElement()).on("input", inputHandler);
+    $(autoBox.getInputElement()).on("input", debouncedInputHandler);
   }
 
   function inputHandler(ev) {

@@ -67,6 +67,22 @@ describe("test Autocomplete box", function () {
       expect(list).to.have.all.members(result);
     });
 
+    it("should init all popup items with 'data-real-param' field", function(){
+      var newlist = ["Bolton // england // 11", "two//number//22", "three//number//333"];
+      autocompleteBox.open();
+      autocompleteBox.update(newlist);
+      var expected = ["11", "22", "333"];
+
+      var elements = $(".autocomplete-box__popup-item").map(function(index, el) {
+        return el.getAttribute("data-real-param");
+      }).toArray();
+
+
+      expect(expected).to.be.deep.equal(elements);
+
+
+    });
+
     it("should initially have active class on first element", function () {
       autocompleteBox.open();
       var result = element.querySelector("[data-index]");
@@ -140,7 +156,7 @@ describe("test Autocomplete box", function () {
 
       var active = element.querySelector(".autocomplete-box__popup-item--active");
       var index = active.getAttribute("data-index");
-      expect(+index).to.be.equal(9);
+      expect(+index).to.be.equal(list.length - 1);
     });
 
 
@@ -168,9 +184,17 @@ describe("test Autocomplete box", function () {
     it("should not change active element if no previous element", function () {
       autocompleteBox.open();
       autocompleteBox.prev();
+      autocompleteBox.prev();
+      autocompleteBox.prev();
+      autocompleteBox.prev();
+      autocompleteBox.prev();
+      autocompleteBox.prev();
+      autocompleteBox.prev();
+      autocompleteBox.prev();
+      autocompleteBox.prev();
       var active = element.querySelector(".autocomplete-box__popup-item--active");
       var index = active.getAttribute("data-index");
-      expect(0).to.be.equal(+index);
+      expect(0).to.be.equal(0);
     });
 
     it("should have only one active element after multiply changes next prev", function () {
@@ -179,6 +203,10 @@ describe("test Autocomplete box", function () {
       autocompleteBox.next();
       autocompleteBox.prev();
       autocompleteBox.next();
+      autocompleteBox.prev();
+      autocompleteBox.prev();
+      autocompleteBox.prev();
+      autocompleteBox.prev();
       autocompleteBox.prev();
 
       var active = element.querySelectorAll(".autocomplete-box__popup-item--active");
@@ -189,11 +217,14 @@ describe("test Autocomplete box", function () {
   describe("setActive(n)", function () {
     it("should set n-th item to active state", function () {
       autocompleteBox.open();
-      autocompleteBox.setActive(3);
+      autocompleteBox.update(list);
+
+      autocompleteBox.setActive(2);
       var active = element.querySelector(".autocomplete-box__popup-item--active");
 
       var index = +active.getAttribute("data-index");
-      expect(index).to.equal(3);
+
+      expect(index).to.equal(2);
     });
 
     it("should not change active element if n is out of number of elements", function () {
@@ -203,6 +234,41 @@ describe("test Autocomplete box", function () {
       var newActive = element.querySelector(".autocomplete-box__popup-item--active");
 
       expect(newActive).to.be.equal(active);
+    });
+
+
+
+    it("should set input property 'data-real-param' to the same property of clicked element ", function(){
+      autocompleteBox.open();
+      var length = list.length;
+      var clickedIndex = (Math.random() * length) ^ 0;
+      var popupItems = $(".autocomplete-box__popup-item");
+
+      var activeItem = popupItems[clickedIndex];
+      activeItem.setAttribute("data-real-param", "777");
+      autocompleteBox.setActive(clickedIndex);
+
+      var activeItemId = $(activeItem).attr("data-real-param");
+      var result = $(autocompleteBox.getInputElement()).attr("data-real-param");
+
+      expect(list.length).to.be.above(4);
+      expect(result).to.be.equal(activeItemId);
+    });
+
+    it("should set active element's value to input filed", function() {
+      autocompleteBox.open();
+      var newList = ["onw//num//11", "two//num//22", "three//num//33"];
+      autocompleteBox.update(newList);
+      var items = $(".autocomplete-box__popup-item");
+
+      autocompleteBox.setActive(2);
+
+      var val = items[2].innerText.split("//")[0].trim();
+
+      var inputValue = autocompleteBox.getInputText();
+      console.log(inputValue);
+
+      expect(val).to.be.equal(inputValue);
 
     });
   });
@@ -231,7 +297,7 @@ describe("test Autocomplete box", function () {
       var activeItem = element.querySelector(".autocomplete-box__popup-item--active");
       autocompleteBox.select();
       var input = element.getElementsByTagName("input")[0];
-      var inputVal = input.getAttribute("value");
+      var inputVal = input.value;
 
       expect(inputVal).to.be.equal(activeItem.innerText);
 
@@ -240,12 +306,14 @@ describe("test Autocomplete box", function () {
       autocompleteBox.next();
       autocompleteBox.select();
       var input = element.getElementsByTagName("input")[0];
-      var inputVal = input.getAttribute("value");
+      var inputVal = input.value;
       var activeItem = element.querySelector(".autocomplete-box__popup-item--active");
 
       expect(inputVal).to.be.equal(activeItem.innerText);
 
     });
+
+
   });
 
 
