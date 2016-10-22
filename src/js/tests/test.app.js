@@ -18,7 +18,7 @@ describe("sanity check", function () {
 
   it("should cantain chai-as-promise lib", function () {
     expect(chaiAsPromised).to.exist;
-  })
+  });
 
   it("should have localStorage", function () {
     expect(localStorage).to.exist;
@@ -28,7 +28,7 @@ describe("sanity check", function () {
 describe("check if Promise object is avaliable", function () {
   it("should contain Promise object", function () {
     expect(Promise).to.be.ok;
-  })
+  });
 });
 
 
@@ -67,7 +67,7 @@ describe("Weather class", function () {
                       },
                       function (err) {
                         expect(err).to.be.undefined;
-                      })
+                      });
     });
 
     it("should return object with temp field in it", function () {
@@ -77,7 +77,7 @@ describe("Weather class", function () {
                     })
                     .catch(function (err) {
                       expect(err).to.not.exist;
-                    })
+                    });
     });
 
     it("should return forecast object when passed future param true", function () {
