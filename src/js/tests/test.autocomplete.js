@@ -67,6 +67,7 @@ describe("test Autocomplete box", function () {
       expect(list).to.have.all.members(result);
     });
 
+
     it("should init all popup items with 'data-real-param' field", function () {
       var newlist = ["Bolton // england // 11", "two//number//22", "three//number//333"];
       autocompleteBox.open();
@@ -74,7 +75,7 @@ describe("test Autocomplete box", function () {
       var expected = ["11", "22", "333"];
 
       var elements = $(".autocomplete-box__popup-item").map(function (index, el) {
-        return el.getAttribute("data-real-param");
+        return el.getAttribute("data-real-param").trim();
       }).toArray();
 
 
@@ -156,7 +157,7 @@ describe("test Autocomplete box", function () {
 
       var active = element.querySelector(".autocomplete-box__popup-item--active");
       var index = active.getAttribute("data-index");
-      expect(+index).to.be.equal(list.length - 1);
+      expect(+index).to.be.equal(9);
     });
 
 
@@ -184,17 +185,9 @@ describe("test Autocomplete box", function () {
     it("should not change active element if no previous element", function () {
       autocompleteBox.open();
       autocompleteBox.prev();
-      autocompleteBox.prev();
-      autocompleteBox.prev();
-      autocompleteBox.prev();
-      autocompleteBox.prev();
-      autocompleteBox.prev();
-      autocompleteBox.prev();
-      autocompleteBox.prev();
-      autocompleteBox.prev();
       var active = element.querySelector(".autocomplete-box__popup-item--active");
       var index = active.getAttribute("data-index");
-      expect(0).to.be.equal(0);
+      expect(0).to.be.equal(+index);
     });
 
     it("should have only one active element after multiply changes next prev", function () {
@@ -203,10 +196,6 @@ describe("test Autocomplete box", function () {
       autocompleteBox.next();
       autocompleteBox.prev();
       autocompleteBox.next();
-      autocompleteBox.prev();
-      autocompleteBox.prev();
-      autocompleteBox.prev();
-      autocompleteBox.prev();
       autocompleteBox.prev();
 
       var active = element.querySelectorAll(".autocomplete-box__popup-item--active");
@@ -217,14 +206,11 @@ describe("test Autocomplete box", function () {
   describe("setActive(n)", function () {
     it("should set n-th item to active state", function () {
       autocompleteBox.open();
-      autocompleteBox.update(list);
-
-      autocompleteBox.setActive(2);
+      autocompleteBox.setActive(3);
       var active = element.querySelector(".autocomplete-box__popup-item--active");
 
       var index = +active.getAttribute("data-index");
-
-      expect(index).to.equal(2);
+      expect(index).to.equal(3);
     });
 
     it("should not change active element if n is out of number of elements", function () {
@@ -265,7 +251,7 @@ describe("test Autocomplete box", function () {
       var val = items[2].innerText.split("//")[0].trim();
 
       var inputValue = autocompleteBox.getInputText();
-      console.log(inputValue);
+
 
       expect(val).to.be.equal(inputValue);
 
@@ -296,7 +282,7 @@ describe("test Autocomplete box", function () {
       var activeItem = element.querySelector(".autocomplete-box__popup-item--active");
       autocompleteBox.select();
       var input = element.getElementsByTagName("input")[0];
-      var inputVal = input.value;
+      var inputVal = input.getAttribute("value");
 
       expect(inputVal).to.be.equal(activeItem.innerText);
 
@@ -304,15 +290,15 @@ describe("test Autocomplete box", function () {
       autocompleteBox.next();
       autocompleteBox.next();
       autocompleteBox.select();
+
       input = element.getElementsByTagName("input")[0];
       inputVal = input.value;
       activeItem = element.querySelector(".autocomplete-box__popup-item--active");
 
+
       expect(inputVal).to.be.equal(activeItem.innerText);
 
     });
-
-
   });
 
 

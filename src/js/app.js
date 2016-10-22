@@ -65,30 +65,40 @@ function errorPopUp(err) {
 function clickHandler(ev) {
   var target = ev.target;
 
+  var id = target.getAttribute("data-real-param");
   // click on search icon
   if (target == searchIcon) {
+
     submit(ev);
     autoBox.close();
     return;
   }
   // click on one of the popup fields
-  if(target.hasAttribute("data-index")) {
+  if (target.hasAttribute("data-index")) {
     var id = target.getAttribute("data-real-param");
     autoBox.setActive(id);
     autoBox.getInputElement().setAttribute("data-real-param", id);
     submit(ev);
   }
 
-  // close popup in any case
 
+  // click on one of the popup fields
+  else if (id != undefined && id != "null" && id != "undefined") {
+    console.log("popup cliced");
+    Promise.resolve(autoBox.setActive(id))
+           .then(function () {submit(ev)});
+  }
+  // close popup in any case
   autoBox.close();
+
 
 }
 
 function submit(ev) {
 
   var id = input.getAttribute("data-real-param");
-  if (id  && id !== "null" && id !== "undefined") {
+  console.log(id);
+  if (id && id !== "null" && id !== "undefined") {
 
     weather.fetchForecast(id)
            .then(function (forecastObj) {
@@ -118,6 +128,7 @@ function submit(ev) {
                        var cityName = forecastObj.city.name.toLowerCase();
                        // if comment below code it will allow to peek first city from the list
                        // even if it not fully typed
+                       console.log(forecastObj);
                        if (cityName != input.value.toLowerCase()) {
                          errorPopUp();
                          throw new Error("no such city in database");

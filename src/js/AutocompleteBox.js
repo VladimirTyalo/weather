@@ -13,6 +13,7 @@
 function AutocompleteBox(element, list, lineSplitter) {
   // deep clone of list
   var innerList = JSON.parse(JSON.stringify(list));
+
   if (!(element instanceof Element)) throw new Error("element is not a DOM element");
   if (!Array.isArray(innerList)) throw new Error("list is not an array"); // ?? adopt to pseudo arrays
 
@@ -30,7 +31,7 @@ function AutocompleteBox(element, list, lineSplitter) {
     if (separator != "" && separator != undefined && string.indexOf(separator) >= 0) {
       var cityParams = string.split(separator);
       el.innerText = cityParams[0] + " " + lineSplitter + " " + cityParams[1];
-      el.setAttribute("data-real-param", cityParams[2].trim());
+      el.setAttribute("data-real-param", cityParams[2]);
     }
     else {
       el.innerText = string;
@@ -66,6 +67,18 @@ function AutocompleteBox(element, list, lineSplitter) {
     });
 
     element.appendChild(popup);
+
+    $(popup).on("click", popupClickHandler);
+  }
+
+
+  function popupClickHandler(ev) {
+    ev.preventDefault();
+    var target = ev.target;
+    var index = target.getAttribute("data-index");
+
+    if (index == undefined) return;
+    setActive(index);
   }
 
   function close() {
@@ -73,6 +86,9 @@ function AutocompleteBox(element, list, lineSplitter) {
     if (els.length == 0) return;
     var oldInput = input.value;
 
+    if (popup) {
+      popup.removeEventListener("click", popupClickHandler);
+    }
 
     els[0].parentNode.removeChild(els[0]);
     activeItem = undefined;
@@ -89,7 +105,6 @@ function AutocompleteBox(element, list, lineSplitter) {
 
   function next() {
     var current = element.querySelector("." + POPUP_ITEM_ACTIVE_CLASS);
-    if(!current) return;
 
     if (current && current.nextSibling) {
       setActiveSibling(current, current.nextSibling, "nextSibling");
@@ -100,7 +115,7 @@ function AutocompleteBox(element, list, lineSplitter) {
 
   function prev() {
     var current = element.querySelector("." + POPUP_ITEM_ACTIVE_CLASS);
-    if(!current) return;
+
     if (current && current.previousSibling) {
       setActiveSibling(current, current.previousSibling, "previousSibling");
       select();
@@ -134,12 +149,7 @@ function AutocompleteBox(element, list, lineSplitter) {
 
     elements[oldIndex].classList.remove(POPUP_ITEM_ACTIVE_CLASS);
     elements[index].classList.add(POPUP_ITEM_ACTIVE_CLASS);
-
     activeItem = elements[index];
-
-    var id = activeItem.getAttribute("data-real-param");
-    input.setAttribute("data-real-param", id);
-    activeItem.setAttribute("data-index", index);
 
     select();
   }
@@ -154,6 +164,9 @@ function AutocompleteBox(element, list, lineSplitter) {
 
   function select() {
     var activeVal = (activeItem)? activeItem.innerText : "";
+    var realQueryParameter = activeItem.getAttribute("data-real-param");
+
+    input.setAttribute("value", activeVal);
 
     if (lineSplitter != "" && lineSplitter != undefined) {
       input.value = activeVal.split(lineSplitter)[0].trim();
@@ -164,6 +177,7 @@ function AutocompleteBox(element, list, lineSplitter) {
 
 
     input.focus();
+    input.setAttribute("data-real-param", realQueryParameter);
   }
 
   function getInputText() {
