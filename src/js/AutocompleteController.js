@@ -122,7 +122,6 @@ function AutocompleteController(autoBox, toAutocompleteString) {
   // return promise which resolves only after specific amount of time
   // with the parameters of the last call (successful or not)
   function debounce(fn, time) {
-    if (time <= 0) reject(new Error("debouncing time should be greater then 0"));
     var lastTime = -Infinity;
     var self = this;
     var timeHandler;
@@ -131,6 +130,7 @@ function AutocompleteController(autoBox, toAutocompleteString) {
       var args = Array.prototype.slice.call(arguments);
 
       return new Promise(function executor(resolve, reject) {
+        if (time <= 0) reject(new Error("debouncing time should be greater then 0"));
         var delay = Date.now() - lastTime;
         if (timeHandler) {
           clearInterval(timeHandler);
@@ -149,11 +149,11 @@ function AutocompleteController(autoBox, toAutocompleteString) {
         }
         else {
           timeHandler = setTimeout(function () {
-            resolve(fn.apply(self, args))
+            resolve(fn.apply(self, args));
           }, time - delay);
         }
       });
-    }
+    };
   }
 
 
@@ -166,12 +166,11 @@ function AutocompleteController(autoBox, toAutocompleteString) {
     }
   }
 
-
   return {
     getCities: getCities,
     getCityNames: getCityNames,
     initListeners: initListeners
-  }
+  };
 
 }
 

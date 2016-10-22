@@ -1,7 +1,7 @@
 body {
   margin: 0;
   padding: 0;
-  transition: background-image .5s;
+  transition: background-image 0.5s;
   color: white;
   backgrond-color: #819cab;
   background-repeat: no-repeat repeat;
@@ -66,12 +66,12 @@ ul {
   position: absolute;
   top: 0;
   left: 0;
-  padding: .4em;
+  padding: 0.4em;
   transform: translateY(-105%);
   color: lightcoral;
   border: 1px solid lightcoral;
-  border-radius: .2em;
-  background: rgba(255, 255, 255, .8);
+  border-radius: 0.2em;
+  background: rgba(255, 255, 255, 0.8);
 }
 
 @keyframes fly {
@@ -98,14 +98,14 @@ ul {
 
 .header {
   padding: 2rem 2% 2rem 2%;
-  transition: all .3s;
+  transition: all 0.3s;
   font-size: 2rem;
 }
 
 .header__title {
   display: flex;
   flex-flow: row wrap;
-  background: rgba(0, 0,0, 0.4);
+  background: rgba(0, 0, 0, 0.4);
   border-radius: 0.4em;
 }
 
@@ -122,12 +122,12 @@ ul {
 
 .header__search-icon {
   position: absolute;
-  top: .3rem;
+  top: 0.3rem;
   right: 10px;
   width: 40px;
   height: 40px;
   cursor: pointer;
-  opacity: .4;
+  opacity: 0.4;
 }
 
 .header__search-icon:hover {
@@ -143,13 +143,13 @@ ul {
   padding: 5px 70px 5px 20px;
   color: white;
   border: 2px solid white;
-  border-radius: .2em;
-  background: rgba(0, 0, 0, .3);
+  border-radius: 0.2em;
+  background: rgba(0, 0, 0, 0.3);
 }
 
 .forecast .container {
   padding-top: 20px;
-  background: rgba(0, 0, 0, .3);
+  background: rgba(0, 0, 0, 0.3);
 }
 
 .forecast__today {
@@ -220,10 +220,10 @@ ul {
   top: 120%;
   left: 0;
   width: 100%;
-  transition: all .3s;
+  transition: all 0.3s;
   color: #2b2b2b;
   border: 2px solid white;
-  border-radius: .2em;
+  border-radius: 0.2em;
   background: #ffffff;
 }
 
@@ -237,12 +237,12 @@ ul {
 
 .autocomplete-box__popup-item--active {
   color: #dae9b5;
-  background: rgba(20, 100, 20, .5);
+  background: rgba(20, 100, 20, 0.5);
 }
 
 .forecast__long-period .forecast__item:hover {
   color: antiquewhite;
-  background: rgba(0, 0, 0, .5);
+  background: rgba(0, 0, 0, 0.5);
 }
 
 .forecast__long-period .forecast__week-day {
@@ -307,7 +307,7 @@ ul {
 
   .forecast__today .forecast__icon img {
     top: -1rem;
-    right: .5rem;
+    right: 0.5rem;
     width: 3em;
     height: 3em;
   }
@@ -315,7 +315,6 @@ ul {
   .forecast .container {
     flex-wrap: wrap;
   }
-
 
   .forecast__long-period .forecast__month {
     display: none;
@@ -362,7 +361,7 @@ ul {
   }
 
   .autocomplete-box__popup {
-    font-size: .7rem;
+    font-size: 0.7rem;
   }
 
   .header__city-name,
@@ -372,17 +371,16 @@ ul {
     text-align: center;
   }
 
-
   .header__search-input {
     font-size: 1.2rem;
-    padding-top: .5em;
+    padding-top: 0.5em;
     padding-right: 3em;
-    padding-bottom: .5em;
+    padding-bottom: 0.5em;
     border-radius: 1rem;
   }
 
   .header__search-icon {
-    top: .5rem;
+    top: 0.5rem;
     right: 0;
     width: 2rem;
     height: 2rem;
@@ -391,7 +389,7 @@ ul {
   }
 
   .autocomplete-box__popup {
-    font-size: .8rem;
+    font-size: 0.8rem;
   }
 
   .autocomplete-box__popup-item {

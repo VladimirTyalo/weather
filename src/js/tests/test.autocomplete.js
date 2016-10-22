@@ -67,13 +67,13 @@ describe("test Autocomplete box", function () {
       expect(list).to.have.all.members(result);
     });
 
-    it("should init all popup items with 'data-real-param' field", function(){
+    it("should init all popup items with 'data-real-param' field", function () {
       var newlist = ["Bolton // england // 11", "two//number//22", "three//number//333"];
       autocompleteBox.open();
       autocompleteBox.update(newlist);
       var expected = ["11", "22", "333"];
 
-      var elements = $(".autocomplete-box__popup-item").map(function(index, el) {
+      var elements = $(".autocomplete-box__popup-item").map(function (index, el) {
         return el.getAttribute("data-real-param");
       }).toArray();
 
@@ -99,7 +99,7 @@ describe("test Autocomplete box", function () {
       autocompleteBox.open();
       autocompleteBox.open();
 
-      var popups = element.querySelectorAll(".autocomplete-box__popup");
+      popups = element.querySelectorAll(".autocomplete-box__popup");
 
       expect(popups.length).to.be.equal(1);
     });
@@ -237,8 +237,7 @@ describe("test Autocomplete box", function () {
     });
 
 
-
-    it("should set input property 'data-real-param' to the same property of clicked element ", function(){
+    it("should set input property 'data-real-param' to the same property of clicked element ", function () {
       autocompleteBox.open();
       var length = list.length;
       var clickedIndex = (Math.random() * length) ^ 0;
@@ -255,7 +254,7 @@ describe("test Autocomplete box", function () {
       expect(result).to.be.equal(activeItemId);
     });
 
-    it("should set active element's value to input filed", function() {
+    it("should set active element's value to input filed", function () {
       autocompleteBox.open();
       var newList = ["onw//num//11", "two//num//22", "three//num//33"];
       autocompleteBox.update(newList);
@@ -305,9 +304,9 @@ describe("test Autocomplete box", function () {
       autocompleteBox.next();
       autocompleteBox.next();
       autocompleteBox.select();
-      var input = element.getElementsByTagName("input")[0];
-      var inputVal = input.value;
-      var activeItem = element.querySelector(".autocomplete-box__popup-item--active");
+      input = element.getElementsByTagName("input")[0];
+      inputVal = input.value;
+      activeItem = element.querySelector(".autocomplete-box__popup-item--active");
 
       expect(inputVal).to.be.equal(activeItem.innerText);
 
@@ -317,8 +316,8 @@ describe("test Autocomplete box", function () {
   });
 
 
-  describe("getInput()", function() {
-    it("should return current input field value", function() {
+  describe("getInput()", function () {
+    it("should return current input field value", function () {
       autocompleteBox.open();
       autocompleteBox.update(["Mary", "Mother"]);
       autocompleteBox.select();
@@ -327,7 +326,7 @@ describe("test Autocomplete box", function () {
     });
 
 
-    it("should return input from typed input ", function() {
+    it("should return input from typed input ", function () {
       var input = element.getElementsByTagName("input")[0];
       var typedContent = "H";
       autocompleteBox.open();
@@ -337,7 +336,6 @@ describe("test Autocomplete box", function () {
 
       expect(autocompleteBox.getInputText()).to.be.equal(typedContent);
     });
-  })
-
+  });
 });
 

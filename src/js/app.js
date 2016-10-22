@@ -67,7 +67,7 @@ function clickHandler(ev) {
 
   // click on search icon
   if (target == searchIcon) {
-    submit(ev)
+    submit(ev);
     autoBox.close();
     return;
   }
@@ -124,7 +124,7 @@ function submit(ev) {
                        }
                        $title.text(forecastObj.city.name);
                        $country.text(forecastObj.city.country);
-                       return forecastObj
+                       return forecastObj;
                      })
                      .then(updateForecastView)
                      .then(autoBox.close)

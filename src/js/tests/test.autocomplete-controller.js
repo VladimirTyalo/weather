@@ -62,7 +62,7 @@ describe("AutocompleteController() ", function () {
     it("should return promise with city name in first object", function () {
       function cityToString(city) {
         return city.name + " | " + city.country + " coordinates: [" + city.coord.lat.toFixed(1) + ", " + city.coord.lon.toFixed(1) + "] " + "|" + city.id;
-      };
+      }
 
       autoBox = new AutocompleteBox(inputWrapper, [], "|");
 

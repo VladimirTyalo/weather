@@ -1,6 +1,5 @@
 "use strict";
 
-
 // element's children should contain folowing attributes:
 //  data-weather = "temp"
 //  date-weather = "time"
@@ -59,7 +58,7 @@ WeatherElementHandler.prototype = {
     return reverseBinding;
   },
 
-  _makeSimpleWeahterObject(obj) {
+  _makeSimpleWeahterObject: function(obj) {
     if(!obj) throw new Error("Illegal object weather");
     return {
       temp: (obj.main && obj.main.temp) ? obj.main.temp : "",
@@ -68,8 +67,8 @@ WeatherElementHandler.prototype = {
       wind: (obj.wind && obj.wind.speed) ? obj.wind.speed : "",
       pressure: (obj.main && obj.main.pressure)? obj.main.pressure : "",
       description: (obj.weather && obj.weather[0] && obj.weather[0].description)? obj.weather[0].description : "",
-      icon: (obj.weather && obj.weather[0] && obj.weather[0].icon)? obj.weather[0].icon : "",
-    }
+      icon: (obj.weather && obj.weather[0] && obj.weather[0].icon)? obj.weather[0].icon : ""
+    };
   },
 
   toCelcius: function (tempInFar) {
@@ -80,7 +79,7 @@ WeatherElementHandler.prototype = {
       console.log(e);
     }
   },
-  updateView(forecastIndex) {
+  updateView:function(forecastIndex) {
     this._element.setAttribute("forecast-index", forecastIndex);
     for (var param in this._elementsMap) {
       if (this._elementsMap.hasOwnProperty(param)) {
@@ -94,14 +93,14 @@ WeatherElementHandler.prototype = {
           }
           case "month-day":
           {
-            var time = this._weatherObj.time;
-            var day = (new Date(time)).getDate();
+            time = this._weatherObj.time;
+            day = (new Date(time)).getDate();
             this._elementsMap[param].innerText = day;
             break;
           }
           case "month":
           {
-            var time = this._weatherObj.time;
+            time = this._weatherObj.time;
             var month = toStringMonth(time);
             this._elementsMap[param].innerText = month;
             break;
