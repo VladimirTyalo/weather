@@ -7,7 +7,10 @@ var gulp      = require("gulp"),
     stylelint = require("stylelint"),
     reporter  = require("postcss-reporter"),
     scss      = require("postcss-scss"),
-    htmlhint  = require("gulp-htmlhint");
+    htmlhint  = require("gulp-htmlhint"),
+    debug     = require("debug"),
+    cached    = require("gulp-cached"),
+    remember  = require("gulp-remember");
 
 
 gulp.task("lint:js", function () {
@@ -25,19 +28,21 @@ gulp.task("lint:styles", function () {
       console: true
     })
   ];
-  return gulp.src(config.lint.STYLE_FILES)
+  return gulp.src(config.lint.STYLE_FILES, {since: gulp.lastRun("lint:styles")})
              .pipe(postcss(processors, {syntax: scss}))
 
 });
 
 gulp.task("lint:html", function () {
   return gulp.src(config.lint.HTML_FILES)
+             .pipe(cached("lint:html"))
              .pipe(htmlhint(config.lint.options.HTML))
+             .pipe(remember("lint:html"))
              .pipe(htmlhint.reporter("htmlhint-stylish"))
              .pipe(htmlhint.failReporter({suppress: false}));
 });
 
-gulp.task("lint:all", gulp.parallel("lint:js", "lint:html", "lint:styles", function(done) {
+gulp.task("lint:all", gulp.parallel("lint:js", "lint:html", "lint:styles", function (done) {
   console.log("lint all files OK!");
   done();
 }));
