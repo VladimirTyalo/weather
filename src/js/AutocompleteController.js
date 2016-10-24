@@ -43,10 +43,10 @@ function AutocompleteController(autoBox, toAutocompleteString) {
       }
     });
 
-    //var debouncedInputHandler = debounce(inputHandler, 1050);
+    var debouncedInputHandler = debounce(inputHandler, 1050);
 
-    //$(autoBox.getInputElement()).on("input", debouncedInputHandler);
-    $(autoBox.getInputElement()).on("input", inputHandler);
+    $(autoBox.getInputElement()).on("input", debouncedInputHandler);
+    //$(autoBox.getInputElement()).on("input", inputHandler);
   }
 
   function inputHandler(ev) {
